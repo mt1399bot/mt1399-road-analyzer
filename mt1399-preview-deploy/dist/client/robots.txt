@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Allow: /baccarat-road-analyzer/
+Disallow: /admin
+Disallow: /api/
+Disallow: /member/
+
+Sitemap: https://mt1399.com/sitemap.xml
