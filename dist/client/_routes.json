@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "include": ["/baccarat-road-analyzer/*"],
+  "include": ["/analyze/*"],
   "exclude": [
-    "/baccarat-road-analyzer/admin/*",
-    "/baccarat-road-analyzer/login/*",
-    "/baccarat-road-analyzer/api/admin/*",
-    "/baccarat-road-analyzer/api/member/*"
+    "/analyze/admin/*",
+    "/analyze/login/*",
+    "/analyze/api/admin/*",
+    "/analyze/api/member/*"
   ]
 }

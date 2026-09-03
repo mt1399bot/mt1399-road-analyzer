@@ -616,7 +616,7 @@ var STANDARD_ODDS = {
 	tie: 9.5156
 };
 var SUPPORT_LINE_URL = "https://lin.ee/WG0xITo";
-var APP_VERSION = "v1.9.3";
+var APP_VERSION = "v1.10.0";
 function trackSupportClick(source) {
 	if (typeof window === "undefined") return;
 	const analyticsWindow = window;
@@ -1270,7 +1270,7 @@ function RoadAnalyzer({ member, trial }) {
 	}, [road]);
 	(0, import_react.useEffect)(() => {
 		if (!isTrial) return;
-		fetch("/baccarat-road-analyzer/api/trial/status").then((response) => response.json()).then((value) => {
+		fetch("/analyze/api/trial/status").then((response) => response.json()).then((value) => {
 			if (typeof value.used !== "number") return;
 			setUsedToday(value.used);
 			setTrialExhausted(value.used >= (value.limit ?? usageLimit));
@@ -1281,7 +1281,7 @@ function RoadAnalyzer({ member, trial }) {
 	(0, import_react.useEffect)(() => {
 		if (!learningEnabled) return;
 		let active = true;
-		fetch("/baccarat-road-analyzer/api/learning", { cache: "no-store" }).then(async (response) => {
+		fetch("/analyze/api/learning", { cache: "no-store" }).then(async (response) => {
 			const value = await response.json();
 			if (!active || !response.ok || !value.profile) return;
 			learningProfileRef.current = value.profile;
@@ -1295,7 +1295,7 @@ function RoadAnalyzer({ member, trial }) {
 		if (isTrial) return;
 		let active = true;
 		const reportPresence = () => {
-			fetch("/baccarat-road-analyzer/api/member/presence", {
+			fetch("/analyze/api/member/presence", {
 				method: "POST",
 				keepalive: true
 			}).then((response) => {
@@ -1336,7 +1336,7 @@ function RoadAnalyzer({ member, trial }) {
 		setLearningError("");
 		if (!learningEnabled || !nextPrediction) return;
 		try {
-			const response = await fetch("/baccarat-road-analyzer/api/learning", {
+			const response = await fetch("/analyze/api/learning", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
@@ -1368,7 +1368,7 @@ function RoadAnalyzer({ member, trial }) {
 		setFeedbackSubmitting(true);
 		setLearningError("");
 		try {
-			const response = await fetch("/baccarat-road-analyzer/api/learning", {
+			const response = await fetch("/analyze/api/learning", {
 				method: "PATCH",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
@@ -1413,7 +1413,7 @@ function RoadAnalyzer({ member, trial }) {
 		setLearningError("");
 	}, []);
 	const consumeUsage = (0, import_react.useCallback)(async (mode = "screenshot") => {
-		const usageResponse = await fetch(isTrial ? "/baccarat-road-analyzer/api/trial/use" : "/baccarat-road-analyzer/api/member/use", isTrial ? { method: "POST" } : {
+		const usageResponse = await fetch(isTrial ? "/analyze/api/trial/use" : "/analyze/api/member/use", isTrial ? { method: "POST" } : {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify({ mode })
@@ -1626,7 +1626,7 @@ function RoadAnalyzer({ member, trial }) {
 		setPasteMessage("正在載入範例牌路…");
 		setStatus("reading");
 		try {
-			const response = await fetch("/baccarat-road-analyzer/sample-baccarat-road.png");
+			const response = await fetch("/analyze/sample-baccarat-road.png");
 			if (!response.ok) throw new Error("範例圖片載入失敗");
 			const blob = await response.blob();
 			const parsed = await readRoadFromImage(new File([blob], "sample-baccarat-road.png", { type: blob.type || "image/png" }));
@@ -1692,7 +1692,7 @@ function RoadAnalyzer({ member, trial }) {
 	};
 	const logout = async () => {
 		if (streamRef.current) stopLive();
-		await fetch("/baccarat-road-analyzer/api/member/logout", { method: "POST" });
+		await fetch("/analyze/api/member/logout", { method: "POST" });
 		window.location.replace("/");
 	};
 	const resultStatus = captureMode === "live" ? !liveAnalysisEnabled ? "尚未開通" : liveStatus === "monitoring" && status === "ready" ? "即時同步" : liveStatus === "monitoring" ? "監控中" : liveStatus === "starting" ? "準備中" : status === "ready" ? "上次結果" : "等待監控" : status === "ready" ? "辨識完成" : status === "reading" ? "辨識中" : "等待截圖";
@@ -1734,7 +1734,7 @@ function RoadAnalyzer({ member, trial }) {
 						"aria-label": "MT1399 首頁",
 						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("img", {
 							className: "mt-brand-logo",
-							src: "/baccarat-road-analyzer/mt1399-logo.png",
+							src: "/analyze/mt1399-logo.png",
 							alt: "MT1399",
 							width: 560,
 							height: 118

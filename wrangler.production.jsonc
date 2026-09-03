@@ -1,0 +1,19 @@
+{
+  "name": "mt1399-road-analyzer",
+  "compatibility_date": "2026-08-31",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "./dist/server/index.js",
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "mt1399-road-analyzer-db",
+      "database_id": "ac5a9e58-6d86-4fef-b623-c537f42c2f61"
+    }
+  ],
+
+  "assets": {
+    "directory": "./dist/client",
+    "binding": "ASSETS"
+  }
+}

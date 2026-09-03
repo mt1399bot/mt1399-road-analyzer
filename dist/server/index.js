@@ -5282,7 +5282,7 @@ function setNavigationContext(ctx) {
 }
 var isServer = typeof window === "undefined";
 /** basePath from next.config.js, injected by the plugin at build time */
-var __basePath$1 = "/baccarat-road-analyzer";
+var __basePath$1 = "/analyze";
 var _CLIENT_NAV_STATE_KEY = Symbol.for("vinext.clientNavigationState");
 function getClientNavigationState() {
 	if (isServer) return null;
@@ -15956,7 +15956,7 @@ var metadata$1 = {
 		"蟑螂路",
 		"MT1399"
 	],
-	alternates: { canonical: "/baccarat-road-analyzer/" },
+	alternates: { canonical: "/analyze/" },
 	robots: {
 		index: true,
 		follow: true
@@ -15964,7 +15964,7 @@ var metadata$1 = {
 	openGraph: {
 		title: "百家樂路圖分析器｜免費牌路預測與問路工具｜MT1399",
 		description: "上傳手機或電腦牌路截圖，分析大路、大眼路、小路及曱甴路，並整理下一局牌路訊號。",
-		url: "/baccarat-road-analyzer/",
+		url: "/analyze/",
 		type: "website"
 	},
 	twitter: {
@@ -15977,7 +15977,7 @@ var structuredData = [{
 	"@context": "https://schema.org",
 	"@type": "WebApplication",
 	name: "MT1399 百家樂路圖分析器",
-	url: "https://mt1399.com/baccarat-road-analyzer/",
+	url: "https://mt1399.com/analyze/",
 	applicationCategory: "UtilitiesApplication",
 	operatingSystem: "Android, iOS, Windows, macOS",
 	description: "支援手機與電腦截圖，辨識大路與下三路近期訊號的百家樂牌路分析工具。",
@@ -16706,7 +16706,7 @@ async function buildPageElements(route, params, routePath, pageRequest) {
 		metadataRoutes
 	});
 }
-var __basePath = "/baccarat-road-analyzer";
+var __basePath = "/analyze";
 var __trailingSlash = false;
 var __i18nConfig = null;
 var __configRedirects = [];
@@ -17089,9 +17089,9 @@ async function handleRequest(request, env, ctx) {
 //#endregion
 //#region worker/index.ts
 /** Cloudflare Worker entry point for MT1399 Baccarat Road Analyzer.
-*  Handles basePath /baccarat-road-analyzer/ by rewriting asset paths.
+*  Handles basePath /analyze/ by rewriting asset paths.
 */
-var BASE_PATH = "/baccarat-road-analyzer";
+var BASE_PATH = "/analyze";
 //#endregion
 //#region \0virtual:cloudflare/worker-entry
 var worker_entry_default = { async fetch(request, env, ctx) {

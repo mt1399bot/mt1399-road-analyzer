@@ -1092,7 +1092,7 @@ function setNavigationContext(ctx) {
 }
 var isServer = typeof window === "undefined";
 /** basePath from next.config.js, injected by the plugin at build time */
-var __basePath = "/baccarat-road-analyzer";
+var __basePath = "/analyze";
 function getCurrentInterceptionContext() {
 	if (isServer) return null;
 	return stripBasePath(window.location.pathname, __basePath);
