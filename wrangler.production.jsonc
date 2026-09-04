@@ -4,6 +4,17 @@
   "compatibility_flags": ["nodejs_compat"],
   "main": "./dist/server/index.js",
 
+  "routes": [
+    {
+      "pattern": "mt1399.com/analyze*",
+      "zone_name": "mt1399.com"
+    },
+    {
+      "pattern": "mt1399.com/baccarat-road-analyzer*",
+      "zone_name": "mt1399.com"
+    }
+  ],
+
   "d1_databases": [
     {
       "binding": "DB",
