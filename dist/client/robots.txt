@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
-Allow: /analyze/
+Allow: /baccarat-road-analyzer/
 Disallow: /admin
 Disallow: /api/
 Disallow: /member/

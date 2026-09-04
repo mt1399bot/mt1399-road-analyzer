@@ -1,4 +1,4 @@
-import { o as require_react, r as getLayoutSegmentContext, s as __toESM } from "../index.js";
+import { T as __toESM, b as require_react, i as getLayoutSegmentContext } from "../index.js";
 //#region node_modules/vinext/dist/shims/layout-segment-context.js
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
 /**

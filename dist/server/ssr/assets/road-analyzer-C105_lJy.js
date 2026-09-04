@@ -1,4 +1,4 @@
-import { o as require_react, s as __toESM, t as require_jsx_runtime } from "../index.js";
+import { T as __toESM, b as require_react, t as require_jsx_runtime } from "../index.js";
 //#region app/road-reader.ts
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
 function isCompositeRoadSnapshot(snapshot) {
@@ -616,7 +616,7 @@ var STANDARD_ODDS = {
 	tie: 9.5156
 };
 var SUPPORT_LINE_URL = "https://lin.ee/WG0xITo";
-var APP_VERSION = "v1.10.0";
+var APP_VERSION = "v1.9.3";
 function trackSupportClick(source) {
 	if (typeof window === "undefined") return;
 	const analyticsWindow = window;
