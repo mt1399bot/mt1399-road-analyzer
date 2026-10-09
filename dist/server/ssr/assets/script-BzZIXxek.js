@@ -1,4 +1,4 @@
-import { T as __toESM, b as require_react, n as useScriptNonce } from "../index.js";
+import { n as useScriptNonce, o as require_react, s as __toESM } from "../index.js";
 //#region node_modules/vinext/dist/shims/head.js
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
 /**
