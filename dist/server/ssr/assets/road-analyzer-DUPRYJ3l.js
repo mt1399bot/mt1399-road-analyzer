@@ -1,4 +1,4 @@
-import { T as __toESM, b as require_react, t as require_jsx_runtime } from "../index.js";
+import { o as require_react, s as __toESM, t as require_jsx_runtime } from "../index.js";
 //#region app/road-reader.ts
 var import_react = /* @__PURE__ */ __toESM(require_react(), 1);
 function isCompositeRoadSnapshot(snapshot) {
@@ -615,8 +615,7 @@ var STANDARD_ODDS = {
 	player: 44.6247,
 	tie: 9.5156
 };
-var SUPPORT_LINE_URL = "https://lin.ee/WG0xITo";
-var APP_VERSION = "v1.9.3";
+var APP_VERSION = "v1.11.0";
 function trackSupportClick(source) {
 	if (typeof window === "undefined") return;
 	const analyticsWindow = window;
@@ -944,11 +943,12 @@ function TrialGrowthContent({ lineUrl }) {
 							id: "baccarat-prediction-guide",
 							children: "百家樂牌路分析器使用教學與牌路規則說明"
 						}),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "百家樂預測工具會先辨識截圖中的大路、大眼路、小路與蟑螂路，再把近期排列轉換成可閱讀的莊閒訊號比例。手機使用者只要截取完整牌路並從相簿上傳，電腦使用者則可直接貼上截圖。" }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "上傳手機或電腦牌路截圖，即時分析大路與三條衍生路。不限 MT 真人亦支援 DG、T9、DB、W、EVO 等採用標準牌路介面的百家樂遊戲。" }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 							className: "seo-feature-tags",
 							children: [
-								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "手機截圖分析" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "免登入 20 局" }),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "手機與電腦截圖" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "四種牌路辨識" }),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "莊閒訊號整理" })
 							]
@@ -1059,7 +1059,7 @@ function TrialGrowthContent({ lineUrl }) {
 					children: [
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: ["其他百家樂遊戲可以使用嗎？", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "＋" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [
 							"可以。",
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "MT 真人、DG 真人、T9 真人、歐博真人、W 真人與 SA 真人等遊戲" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "MT 真人、DG、T9、DB、W、EVO 等遊戲" }),
 							"，只要畫面採用可辨識的標準百家樂牌路介面即可上傳分析；特殊版型或截圖不完整時可能無法辨識。"
 						] })] }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: ["手機如何使用 MT1399 百家樂牌路分析工具？", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "＋" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -1072,7 +1072,7 @@ function TrialGrowthContent({ lineUrl }) {
 						})] }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: ["電腦如何貼上百家樂牌路截圖進行分析？", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "＋" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "Windows 可按 Win＋Shift＋S 截取完整牌路，回到分析器後按 Ctrl＋V；也可以點擊「從剪貼簿貼上」或直接拖曳圖片。圖片需清楚包含大路與下三路。" })] }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: ["MT1399 百家樂路圖分析器會讀取哪些內容？", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "＋" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "工具會辨識截圖中的大路、大眼仔路、小路與曱甴路，整理大路近期排列、下三路規律度、訊號一致度及可辨識樣本數，再輸出保守的牌路推估；不會讀取下注金額或遊戲帳號。" })] }),
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: ["免費試用次數怎麼計算？", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "＋" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "只有成功辨識牌路並產生分析結果才會計算一次；無法辨識或沒有產生結果時不會扣除使用次數。" })] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: ["免費試用次數怎麼計算？", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "＋" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "同一連線 IP 共有 20 局免費額度。只有成功辨識牌路並產生分析結果才會計算一次；無法辨識、沒有產生結果或載入範例圖片時不會扣除使用次數。" })] }),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("details", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("summary", { children: ["百家樂牌路分析結果代表下一局一定會出現嗎？", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: "＋" })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "不代表。分析結果是根據已辨識牌路的近期排列、下三路一致度與樣本品質進行訊號整理，不是勝率保證；牌局結果仍具有隨機性。" })] })
 					]
 				})]
@@ -1195,9 +1195,9 @@ function timeLabel() {
 		hour12: false
 	}).format(/* @__PURE__ */ new Date());
 }
-function RoadAnalyzer({ member, trial }) {
-	const isTrial = Boolean(trial);
-	const usageLimit = trial?.limit ?? member?.dailyLimit ?? 0;
+function RoadAnalyzer({ trial }) {
+	const isTrial = true;
+	const usageLimit = trial.limit;
 	const [captureMode, setCaptureMode] = (0, import_react.useState)("upload");
 	const [deviceMode, setDeviceMode] = (0, import_react.useState)("mobile");
 	const [preview, setPreview] = (0, import_react.useState)(null);
@@ -1210,9 +1210,9 @@ function RoadAnalyzer({ member, trial }) {
 	const [dragging, setDragging] = (0, import_react.useState)(false);
 	const [pasteMessage, setPasteMessage] = (0, import_react.useState)("");
 	const [analysisError, setAnalysisError] = (0, import_react.useState)("");
-	const [usedToday, setUsedToday] = (0, import_react.useState)(trial?.used ?? member?.usedToday ?? 0);
-	const [trialExhausted, setTrialExhausted] = (0, import_react.useState)(isTrial && (trial?.used ?? 0) >= usageLimit);
-	const [trialDisabled, setTrialDisabled] = (0, import_react.useState)(Boolean(trial?.disabled));
+	const [usedToday, setUsedToday] = (0, import_react.useState)(trial.used);
+	const [trialExhausted, setTrialExhausted] = (0, import_react.useState)(trial.used >= usageLimit);
+	const [trialDisabled, setTrialDisabled] = (0, import_react.useState)(trial.disabled);
 	const [learningTotal, setLearningTotal] = (0, import_react.useState)(0);
 	const [activePrediction, setActivePrediction] = (0, import_react.useState)(null);
 	const [feedbackTarget, setFeedbackTarget] = (0, import_react.useState)(null);
@@ -1251,8 +1251,8 @@ function RoadAnalyzer({ member, trial }) {
 	}, []);
 	const road = (0, import_react.useMemo)(() => snapshot?.outcomes ?? [], [snapshot]);
 	const trialUnavailable = trialExhausted || trialDisabled;
-	const liveAnalysisEnabled = !isTrial && Boolean(member?.liveAnalysisEnabled);
-	const learningEnabled = !isTrial && Boolean(member?.learningEnabled);
+	const liveAnalysisEnabled = false;
+	const learningEnabled = false;
 	const stats = (0, import_react.useMemo)(() => {
 		const banker = road.filter((item) => item === "B").length;
 		const player = road.filter((item) => item === "P").length;
@@ -1269,7 +1269,6 @@ function RoadAnalyzer({ member, trial }) {
 		};
 	}, [road]);
 	(0, import_react.useEffect)(() => {
-		if (!isTrial) return;
 		fetch("/analyze/api/trial/status").then((response) => response.json()).then((value) => {
 			if (typeof value.used !== "number") return;
 			setUsedToday(value.used);
@@ -1278,92 +1277,20 @@ function RoadAnalyzer({ member, trial }) {
 			if (value.disabled) setAnalysisError("此 IP 的免費試用已被管理員停用");
 		}).catch(() => void 0);
 	}, [isTrial, usageLimit]);
-	(0, import_react.useEffect)(() => {
-		if (!learningEnabled) return;
-		let active = true;
-		fetch("/analyze/api/learning", { cache: "no-store" }).then(async (response) => {
-			const value = await response.json();
-			if (!active || !response.ok || !value.profile) return;
-			learningProfileRef.current = value.profile;
-			setLearningTotal(value.profile.totalFeedback);
-		}).catch(() => void 0);
-		return () => {
-			active = false;
-		};
-	}, [learningEnabled]);
-	(0, import_react.useEffect)(() => {
-		if (isTrial) return;
-		let active = true;
-		const reportPresence = () => {
-			fetch("/analyze/api/member/presence", {
-				method: "POST",
-				keepalive: true
-			}).then((response) => {
-				if (active && (response.status === 401 || response.status === 403)) window.location.replace("/");
-			}).catch(() => void 0);
-		};
-		reportPresence();
-		const timer = window.setInterval(reportPresence, 45e3);
-		const handleVisibility = () => {
-			if (document.visibilityState === "visible") reportPresence();
-		};
-		document.addEventListener("visibilitychange", handleVisibility);
-		return () => {
-			active = false;
-			window.clearInterval(timer);
-			document.removeEventListener("visibilitychange", handleVisibility);
-		};
-	}, [isTrial]);
+	(0, import_react.useEffect)(() => {}, [learningEnabled]);
+	(0, import_react.useEffect)(() => {}, [isTrial]);
 	const commitAnalysis = (0, import_react.useCallback)(async (parsed, mode) => {
-		const previousPrediction = learningEnabled ? activePredictionRef.current : null;
-		const previousSnapshot = latestSnapshotRef.current;
-		if (previousPrediction && !reportedPredictionIdsRef.current.has(previousPrediction.id) && !feedbackTargetRef.current) {
-			const detectedOutcome = previousSnapshot && isNextCompletedRound(previousSnapshot, parsed) ? parsed.outcomes.at(-1) : void 0;
-			const target = {
-				...previousPrediction,
-				suggestedActual: detectedOutcome
-			};
-			feedbackTargetRef.current = target;
-			setFeedbackTarget(target);
-		}
+		latestSnapshotRef.current;
 		latestSnapshotRef.current = parsed;
 		activePredictionRef.current = null;
 		setActivePrediction(null);
-		const nextPrediction = roadPrediction(parsed, learningEnabled ? learningProfileRef.current : null);
+		const nextPrediction = roadPrediction(parsed, null);
 		setSnapshot(parsed);
 		setPrediction(nextPrediction);
 		setFeedbackReceipt("");
 		setLearningError("");
-		if (!learningEnabled || !nextPrediction) return;
-		try {
-			const response = await fetch("/analyze/api/learning", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					predictedSide: nextPrediction.predictedSide,
-					bankerTenths: Math.round(nextPrediction.banker * 10),
-					signalClass: nextPrediction.signalClass,
-					strengthClass: nextPrediction.strengthClass,
-					captureMode: mode,
-					signature: parsed.signature
-				})
-			});
-			const value = await response.json();
-			if (!response.ok || !value.prediction) throw new Error(value.error || "無法建立學習紀錄");
-			const record = {
-				id: value.prediction.id,
-				predictedSide: value.prediction.predictedSide,
-				banker: nextPrediction.banker,
-				player: nextPrediction.player,
-				featureBucket: value.prediction.featureBucket
-			};
-			activePredictionRef.current = record;
-			setActivePrediction(record);
-		} catch {
-			setLearningError("本局分析正常，但學習紀錄暫時無法建立");
-		}
 	}, [learningEnabled]);
-	const submitFeedback = (0, import_react.useCallback)(async (target, actualOutcome) => {
+	(0, import_react.useCallback)(async (target, actualOutcome) => {
 		if (feedbackSubmitting || reportedPredictionIdsRef.current.has(target.id)) return;
 		setFeedbackSubmitting(true);
 		setLearningError("");
@@ -1399,7 +1326,7 @@ function RoadAnalyzer({ member, trial }) {
 			setFeedbackSubmitting(false);
 		}
 	}, [feedbackSubmitting]);
-	const skipFeedback = (0, import_react.useCallback)((target) => {
+	(0, import_react.useCallback)((target) => {
 		reportedPredictionIdsRef.current.add(target.id);
 		if (feedbackTargetRef.current?.id === target.id) {
 			feedbackTargetRef.current = null;
@@ -1413,25 +1340,17 @@ function RoadAnalyzer({ member, trial }) {
 		setLearningError("");
 	}, []);
 	const consumeUsage = (0, import_react.useCallback)(async (mode = "screenshot") => {
-		const usageResponse = await fetch(isTrial ? "/analyze/api/trial/use" : "/analyze/api/member/use", isTrial ? { method: "POST" } : {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ mode })
-		});
+		const usageResponse = await fetch("/analyze/api/trial/use", { method: "POST" });
 		const usage = await usageResponse.json();
-		if (!isTrial && (usageResponse.status === 401 || usageResponse.status === 403 && !usage.error?.includes("畫面即時分析"))) {
-			window.location.replace("/");
-			throw new Error("請重新登入");
-		}
 		if (!usageResponse.ok) {
-			if (isTrial && usageResponse.status === 429) setTrialExhausted(true);
-			if (isTrial && usageResponse.status === 403 && usage.disabled) setTrialDisabled(true);
+			if (usageResponse.status === 429) setTrialExhausted(true);
+			if (usageResponse.status === 403 && usage.disabled) setTrialDisabled(true);
 			throw new Error(usage.error || "目前無法進行分析");
 		}
-		const used = isTrial ? usage.used : usage.usedToday;
+		const used = usage.used;
 		if (typeof used !== "number") throw new Error("目前無法記錄分析次數");
 		setUsedToday(used);
-		if (isTrial && used >= (usage.limit ?? usageLimit)) setTrialExhausted(true);
+		if (used >= (usage.limit ?? usageLimit)) setTrialExhausted(true);
 		return used;
 	}, [isTrial, usageLimit]);
 	const stopLive = (0, import_react.useCallback)((message = "即時監控已停止") => {
@@ -1452,119 +1371,69 @@ function RoadAnalyzer({ member, trial }) {
 		setLiveMessage(message);
 		setStatus((current) => current === "ready" ? current : "idle");
 	}, []);
-	const inspectLiveFrame = (0, import_react.useCallback)(async () => {
-		const video = videoRef.current;
-		if (!video || !streamRef.current || frameReadingRef.current || video.readyState < 2 || !video.videoWidth || !video.videoHeight) return;
-		frameReadingRef.current = true;
-		try {
-			const lockedRegion = liveRegionRef.current;
-			const parsed = liveRoadOnly(!lockedRegion ? locateLiveRoadFromSource(video, video.videoWidth, video.videoHeight) : readRoadFromSource(video, video.videoWidth, video.videoHeight, lockedRegion));
-			if (!parsed) {
-				missingFramesRef.current += 1;
-				if (lockedRegion && missingFramesRef.current >= 12) {
-					liveRegionRef.current = null;
-					pendingStateKeyRef.current = "";
-					pendingCountRef.current = 0;
-					setLiveMessage("牌路區持續被遮擋，正在重新鎖定同一種標準牌路面板…");
+	(0, import_react.useCallback)(async () => {
+		setAnalysisError("");
+	}, [
+		(0, import_react.useCallback)(async () => {
+			const video = videoRef.current;
+			if (!video || !streamRef.current || frameReadingRef.current || video.readyState < 2 || !video.videoWidth || !video.videoHeight) return;
+			frameReadingRef.current = true;
+			try {
+				const lockedRegion = liveRegionRef.current;
+				const parsed = liveRoadOnly(!lockedRegion ? locateLiveRoadFromSource(video, video.videoWidth, video.videoHeight) : readRoadFromSource(video, video.videoWidth, video.videoHeight, lockedRegion));
+				if (!parsed) {
+					missingFramesRef.current += 1;
+					if (lockedRegion && missingFramesRef.current >= 12) {
+						liveRegionRef.current = null;
+						pendingStateKeyRef.current = "";
+						pendingCountRef.current = 0;
+						setLiveMessage("牌路區持續被遮擋，正在重新鎖定同一種標準牌路面板…");
+						return;
+					}
+					if (missingFramesRef.current === 4) setLiveMessage("本局預測維持不變，等待標準牌路白色格線區恢復顯示");
 					return;
 				}
-				if (missingFramesRef.current === 4) setLiveMessage("本局預測維持不變，等待標準牌路白色格線區恢復顯示");
-				return;
-			}
-			missingFramesRef.current = 0;
-			const newlyLocked = !lockedRegion && parsed.region;
-			if (newlyLocked) liveRegionRef.current = parsed.region;
-			const accepted = acceptedSnapshotRef.current;
-			if (accepted && !isNextCompletedRound(accepted, parsed)) {
+				missingFramesRef.current = 0;
+				const newlyLocked = !lockedRegion && parsed.region;
+				if (newlyLocked) liveRegionRef.current = parsed.region;
+				const accepted = acceptedSnapshotRef.current;
+				if (accepted && !isNextCompletedRound(accepted, parsed)) {
+					pendingStateKeyRef.current = "";
+					pendingCountRef.current = 0;
+					setLiveMessage("本局預測已鎖定，等待大路確定新增 1 個結果");
+					return;
+				}
+				const stateKey = liveRoadStateKey(parsed);
+				if (stateKey === pendingStateKeyRef.current) pendingCountRef.current += 1;
+				else {
+					pendingStateKeyRef.current = stateKey;
+					pendingCountRef.current = 1;
+					setLiveMessage(newlyLocked ? "已鎖定標準牌路面板，正在確認目前局數…" : "大路新增結果，正在等待畫面穩定…");
+				}
+				if (pendingCountRef.current < 4) return;
+				const used = await consumeUsage("live");
+				acceptedSnapshotRef.current = parsed;
 				pendingStateKeyRef.current = "";
 				pendingCountRef.current = 0;
+				await commitAnalysis(parsed, "live");
+				setStatus("ready");
+				setLastDetectedAt(timeLabel());
 				setLiveMessage("本局預測已鎖定，等待大路確定新增 1 個結果");
-				return;
+				if (used >= usageLimit) stopLive("免費試用次數已用完");
+			} catch (cause) {
+				const message = cause instanceof Error ? cause.message : "畫面辨識暫時中斷，系統正在重試…";
+				if (message.includes("試用次數已用完") || message.includes("停用") || message.includes("尚未開通")) stopLive(message);
+				else setLiveMessage(message);
+			} finally {
+				frameReadingRef.current = false;
 			}
-			const stateKey = liveRoadStateKey(parsed);
-			if (stateKey === pendingStateKeyRef.current) pendingCountRef.current += 1;
-			else {
-				pendingStateKeyRef.current = stateKey;
-				pendingCountRef.current = 1;
-				setLiveMessage(newlyLocked ? "已鎖定標準牌路面板，正在確認目前局數…" : "大路新增結果，正在等待畫面穩定…");
-			}
-			if (pendingCountRef.current < 4) return;
-			const used = await consumeUsage("live");
-			acceptedSnapshotRef.current = parsed;
-			pendingStateKeyRef.current = "";
-			pendingCountRef.current = 0;
-			await commitAnalysis(parsed, "live");
-			setStatus("ready");
-			setLastDetectedAt(timeLabel());
-			setLiveMessage("本局預測已鎖定，等待大路確定新增 1 個結果");
-			if (isTrial && used >= usageLimit) stopLive("免費試用次數已用完");
-		} catch (cause) {
-			const message = cause instanceof Error ? cause.message : "畫面辨識暫時中斷，系統正在重試…";
-			if (isTrial && (message.includes("試用次數已用完") || message.includes("停用")) || message.includes("尚未開通")) stopLive(message);
-			else setLiveMessage(message);
-		} finally {
-			frameReadingRef.current = false;
-		}
-	}, [
-		commitAnalysis,
-		consumeUsage,
-		isTrial,
-		stopLive,
-		usageLimit
-	]);
-	const startLive = (0, import_react.useCallback)(async () => {
-		setAnalysisError("");
-		if (trialUnavailable || !liveAnalysisEnabled) return;
-		if (!navigator.mediaDevices?.getDisplayMedia) {
-			setLiveStatus("error");
-			setLiveMessage("此瀏覽器不支援即時監控，請改用電腦版 Chrome");
-			return;
-		}
-		setLiveStatus("starting");
-		setLiveMessage("請在 Chrome 視窗選擇 MT 百家的分頁或視窗");
-		try {
-			const stream = await navigator.mediaDevices.getDisplayMedia({
-				video: {
-					frameRate: {
-						ideal: 5,
-						max: 8
-					},
-					width: { ideal: 1920 },
-					height: { ideal: 1080 }
-				},
-				audio: false
-			});
-			streamRef.current = stream;
-			const video = videoRef.current;
-			if (!video) throw new Error("無法建立畫面預覽");
-			video.srcObject = stream;
-			await video.play();
-			setSnapshot(null);
-			setPrediction(null);
-			setStatus("reading");
-			setLastDetectedAt("");
-			setLiveStatus("monitoring");
-			setLiveMessage("監控中，只鎖定標準大路＋下方三路白色格線面板");
-			acceptedSnapshotRef.current = null;
-			liveRegionRef.current = null;
-			pendingStateKeyRef.current = "";
-			pendingCountRef.current = 0;
-			missingFramesRef.current = 0;
-			stream.getVideoTracks()[0]?.addEventListener("ended", () => stopLive("Chrome 已停止分享畫面"), { once: true });
-			monitorTimerRef.current = setInterval(() => void inspectLiveFrame(), 650);
-			window.setTimeout(() => void inspectLiveFrame(), 250);
-		} catch (cause) {
-			const stream = streamRef.current;
-			streamRef.current = null;
-			stream?.getTracks().forEach((track) => track.stop());
-			if (videoRef.current) videoRef.current.srcObject = null;
-			const message = cause instanceof Error && cause.name === "NotAllowedError" ? "你已取消畫面分享，尚未扣除分析局數" : cause instanceof Error ? cause.message : "目前無法開始即時監控";
-			setLiveStatus("error");
-			setLiveMessage(message);
-			setStatus("idle");
-		}
-	}, [
-		inspectLiveFrame,
+		}, [
+			commitAnalysis,
+			consumeUsage,
+			isTrial,
+			stopLive,
+			usageLimit
+		]),
 		liveAnalysisEnabled,
 		stopLive,
 		trialUnavailable
@@ -1633,7 +1502,7 @@ function RoadAnalyzer({ member, trial }) {
 			if (parsed.markerCount < 6) throw new Error("範例牌路暫時無法辨識");
 			if (previewUrlRef.current) URL.revokeObjectURL(previewUrlRef.current);
 			previewUrlRef.current = null;
-			setPreview("/sample-baccarat-road.png");
+			setPreview("/analyze/sample-baccarat-road.png");
 			await commitAnalysis(parsed, "upload");
 			setStatus("ready");
 			setPasteMessage("範例分析完成；此操作不扣免費試用次數");
@@ -1645,11 +1514,6 @@ function RoadAnalyzer({ member, trial }) {
 			analyzingRef.current = false;
 		}
 	}, [commitAnalysis]);
-	const selectMode = (mode) => {
-		if (captureMode === "live" && mode === "upload" && streamRef.current) stopLive();
-		setCaptureMode(mode);
-		setAnalysisError("");
-	};
 	(0, import_react.useEffect)(() => {
 		const handlePaste = (event) => {
 			const pastedImage = Array.from(event.clipboardData?.items ?? []).find((item) => item.type.startsWith("image/"))?.getAsFile();
@@ -1690,14 +1554,9 @@ function RoadAnalyzer({ member, trial }) {
 			setPasteMessage("請直接按 Ctrl + V 貼上截圖");
 		}
 	};
-	const logout = async () => {
-		if (streamRef.current) stopLive();
-		await fetch("/analyze/api/member/logout", { method: "POST" });
-		window.location.replace("/");
-	};
-	const resultStatus = captureMode === "live" ? !liveAnalysisEnabled ? "尚未開通" : liveStatus === "monitoring" && status === "ready" ? "即時同步" : liveStatus === "monitoring" ? "監控中" : liveStatus === "starting" ? "準備中" : status === "ready" ? "上次結果" : "等待監控" : status === "ready" ? "辨識完成" : status === "reading" ? "辨識中" : "等待截圖";
-	const visibleFeedback = learningEnabled ? feedbackTarget ?? activePrediction : null;
-	const lineCta = trial && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+	const resultStatus = captureMode === "live" ? "尚未開通" : status === "ready" ? "辨識完成" : status === "reading" ? "辨識中" : "等待截圖";
+	const visibleFeedback = null;
+	const lineCta = /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
 		className: "line-cta",
 		href: trial.lineUrl,
 		target: "_blank",
@@ -1710,7 +1569,7 @@ function RoadAnalyzer({ member, trial }) {
 	});
 	const supportCta = /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
 		className: "line-cta",
-		href: trial?.lineUrl ?? SUPPORT_LINE_URL,
+		href: trial.lineUrl,
 		target: "_blank",
 		rel: "noreferrer",
 		onClick: () => trackSupportClick("feature_gate"),
@@ -1719,7 +1578,6 @@ function RoadAnalyzer({ member, trial }) {
 			size: 20
 		}), " 聯繫客服"]
 	});
-	const memberExpiry = member?.expiresAt === "9999-12-31" ? "永久有效" : `有效至 ${member?.expiresAt.replaceAll("-", "/")}`;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("main", {
 		className: "app-shell",
 		children: [
@@ -1742,50 +1600,63 @@ function RoadAnalyzer({ member, trial }) {
 					})
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 					className: "member-block",
-					children: [
-						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: isTrial ? "MT1399 牌路預測分析" : member?.username }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: isTrial ? APP_VERSION : memberExpiry })] }),
-						!isTrial && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "quota",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: Math.max(0, usageLimit - usedToday) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: [
-								"/ ",
-								usageLimit,
-								" 局"
-							] })]
-						}),
-						isTrial ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
-							className: "top-line-link",
-							href: trial?.lineUrl,
-							target: "_blank",
-							rel: "noreferrer",
-							"aria-label": "聯繫官方客服",
-							onClick: () => trackSupportClick("header"),
-							children: "專人服務"
-						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							"aria-label": "登出",
-							onClick: logout,
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { name: "logout" })
-						})
-					]
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "MT1399 牌路預測分析" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: APP_VERSION })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("a", {
+						className: "top-line-link",
+						href: trial.lineUrl,
+						target: "_blank",
+						rel: "noreferrer",
+						"aria-label": "聯繫官方客服",
+						onClick: () => trackSupportClick("header"),
+						children: "專人服務"
+					})]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 				className: "dashboard",
 				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 						className: "hero-copy",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", { children: isTrial ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-							"百家樂路圖分析器",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+							"百家樂牌路分析器",
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("em", { children: "免費線上看路預測與下三路問路工具" }),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "免費試用版" })
-						] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-							"截圖貼上",
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("br", {}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("em", { children: "立即分析牌路" })
-						] }) }), isTrial && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("em", { children: "上傳截圖・立即整理牌路訊號" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "免登入免費試用 20 局" })
+						] }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "hero-lead",
-							children: "上傳手機或電腦牌路截圖，即時分析大路與三條衍生路。不限 MT 真人，亦支援 DG、T9、歐博、W、SA 等採用標準牌路介面的百家樂遊戲。"
-						})] })
+							children: "上傳手機或電腦牌路截圖，即時分析大路與三條衍生路。不限 MT 真人亦支援 DG、T9、DB、W、EVO 等採用標準牌路介面的百家樂遊戲。"
+						})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
+							className: "trial-hero-note",
+							"aria-label": `免費試用剩餘 ${Math.max(0, usageLimit - usedToday)} 局`,
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("strong", { children: [
+								"剩餘 ",
+								Math.max(0, usageLimit - usedToday),
+								"／",
+								usageLimit,
+								" 局"
+							] }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "同一 IP 共用額度；成功產生結果才扣 1 局" })]
+						})]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+						className: "trial-highlights",
+						"aria-label": "公開試用說明",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+								name: "scan",
+								size: 20
+							}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "免註冊直接試用" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "開啟網頁即可使用，同一 IP 共 20 局" })] })] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+								name: "chart",
+								size: 20
+							}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "成功分析才扣次數" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "辨識失敗與範例圖片都不扣額度" })] })] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+								name: "shield",
+								size: 20
+							}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "不讀取遊戲帳密" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "圖片在瀏覽器本機辨識，IP 僅用於試用計次" })] })] }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("article", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
+								name: "info",
+								size: 20
+							}) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "訊號不是勝率保證" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "結果用於整理牌路，下一局仍具有隨機性" })] })] })
+						]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
 						className: "work-grid",
@@ -1802,31 +1673,8 @@ function RoadAnalyzer({ member, trial }) {
 										}), " 本機辨識"]
 									})]
 								}),
-								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "capture-tabs",
-									role: "tablist",
-									"aria-label": "分析方式",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-										role: "tab",
-										"aria-selected": captureMode === "upload",
-										className: captureMode === "upload" ? "active" : "",
-										onClick: () => selectMode("upload"),
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
-											name: "paste",
-											size: 16
-										}), " 截圖貼上"]
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-										role: "tab",
-										"aria-selected": captureMode === "live",
-										className: captureMode === "live" ? "active" : "",
-										onClick: () => selectMode("live"),
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
-											name: "monitor",
-											size: 16
-										}), " 畫面即時分析"]
-									})]
-								}),
-								captureMode === "live" ? !liveAnalysisEnabled ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								false,
+								captureMode === "live" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "live-feature-gate",
 									role: "status",
 									children: [
@@ -1839,68 +1687,6 @@ function RoadAnalyzer({ member, trial }) {
 										supportCta
 									]
 								}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: `live-preview ${liveStatus === "monitoring" ? "is-live" : ""}`,
-										children: [
-											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("video", {
-												ref: videoRef,
-												muted: true,
-												playsInline: true,
-												autoPlay: true,
-												"aria-label": "正在分享的 MT 百家畫面預覽"
-											}),
-											liveStatus !== "monitoring" && liveStatus !== "starting" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-												className: "live-empty",
-												children: [
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
-														name: "monitor",
-														size: 28
-													}) }),
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "選取 MT 百家的即時畫面" }),
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "首次自動定位，之後只分析固定牌路區域" })
-												]
-											}),
-											liveStatus === "starting" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-												className: "live-empty",
-												children: [
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "spinner large" }),
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "等待 Chrome 畫面授權" }),
-													/* @__PURE__ */ (0, import_jsx_runtime.jsx)("small", { children: "請在跳出的視窗選擇 MT 百家" })
-												]
-											}),
-											liveStatus === "monitoring" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-												className: "live-badge",
-												children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("i", {}), " 即時監控中"]
-											})
-										]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: `live-message ${liveStatus === "error" ? "error" : ""}`,
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: liveMessage }), lastDetectedAt && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("small", { children: ["最後更新 ", lastDetectedAt] })]
-									}),
-									liveStatus === "monitoring" ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-										className: "stop-live-button",
-										type: "button",
-										onClick: () => stopLive(),
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
-											name: "stop",
-											size: 17
-										}), " 停止即時監控"]
-									}) : trialUnavailable ? lineCta : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-										className: "analyze-button live-start-button",
-										type: "button",
-										onClick: startLive,
-										disabled: liveStatus === "starting",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, { name: "monitor" }), " 開始即時監控"]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-										className: "live-quota-note",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
-											name: "info",
-											size: 15
-										}), " 讀取目前分享畫面，不使用範例圖；鎖定後只分析指定位置"]
-									})
-								] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 										className: `dropzone device-${deviceMode} ${dragging ? "dragging" : ""} ${preview ? "has-preview" : ""}`,
 										onDragOver: (event) => {
@@ -1945,7 +1731,7 @@ function RoadAnalyzer({ member, trial }) {
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "按 Win＋Shift＋S 截取完整牌路，回到本頁按 Ctrl＋V 立即分析" })
 										] })]
 									}),
-									isTrial && !preview && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+									!preview && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
 										className: "sample-road-button",
 										type: "button",
 										onClick: () => void loadSample(),
@@ -2020,7 +1806,7 @@ function RoadAnalyzer({ member, trial }) {
 										children: resultStatus
 									})]
 								}),
-								isTrial && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "result-trial-quota",
 									"aria-label": `剩餘 ${Math.max(0, usageLimit - usedToday)} / ${usageLimit} 局`,
 									children: [
@@ -2029,7 +1815,7 @@ function RoadAnalyzer({ member, trial }) {
 											usageLimit,
 											" 局"
 										] })] })] }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "如需獲取正式版請洽詢官方客服 LINE @mt7777" }),
+										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "同一 IP 共用額度；辨識失敗與範例圖片不扣次數" }),
 										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
 											href: trial?.lineUrl,
 											target: "_blank",
@@ -2106,46 +1892,7 @@ function RoadAnalyzer({ member, trial }) {
 										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", { children: ["蟑螂路 ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("b", { children: snapshot.cockroachRoad.length })] })
 									]
 								}),
-								status === "ready" && visibleFeedback && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: `learning-feedback ${visibleFeedback.suggestedActual ? "detected" : ""}`,
-									children: [
-										/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-											className: "learning-feedback-heading",
-											children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { children: "模型自我校準" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("small", { children: [
-												"已累積 ",
-												learningTotal,
-												" 局回報"
-											] })]
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: visibleFeedback.suggestedActual ? `系統辨識上一局開出「${labels[visibleFeedback.suggestedActual]}」，請確認實際結果` : `目前最高訊號為「${labels[visibleFeedback.predictedSide]}」，開牌後實際開出什麼？` }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", { children: "請直接選擇實際結果。系統會自行判斷是否命中；和局會另外記錄，不列入莊閒命中率。" }),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-											className: "learning-feedback-actions",
-											children: [
-												"B",
-												"P",
-												"T"
-											].map((outcome) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
-												type: "button",
-												className: `${outcome === "B" ? "banker" : outcome === "P" ? "player" : "tie"} ${visibleFeedback.suggestedActual === outcome ? "suggested" : ""}`,
-												disabled: feedbackSubmitting,
-												onClick: () => void submitFeedback(visibleFeedback, outcome),
-												children: [
-													"開",
-													labels[outcome],
-													visibleFeedback.suggestedActual === outcome ? "（系統辨識）" : ""
-												]
-											}, outcome))
-										}),
-										/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-											type: "button",
-											className: "learning-skip",
-											disabled: feedbackSubmitting,
-											onClick: () => skipFeedback(visibleFeedback),
-											children: "不確定，略過本局"
-										})
-									]
-								}),
+								status === "ready" && visibleFeedback,
 								feedbackReceipt && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 									className: "learning-receipt",
 									role: "status",
@@ -2159,12 +1906,12 @@ function RoadAnalyzer({ member, trial }) {
 							]
 						})]
 					}),
-					isTrial && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrialGrowthContent, { lineUrl: trial?.lineUrl ?? SUPPORT_LINE_URL })
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrialGrowthContent, { lineUrl: trial.lineUrl })
 				]
 			}),
-			isTrial && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("a", {
 				className: "floating-support-cta",
-				href: trial?.lineUrl,
+				href: trial.lineUrl,
 				target: "_blank",
 				rel: "noreferrer",
 				"aria-label": "聯繫官方客服",

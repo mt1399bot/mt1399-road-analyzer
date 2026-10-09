@@ -1,4 +1,4 @@
-globalThis.__VINEXT_LAZY_CHUNKS__ = ["analyze/assets/image-CmDaEWN9.js","analyze/assets/link-rc_f92v7.js","analyze/assets/admin-console-CQwAVn7p.js","analyze/assets/admin-login-CSHILumQ.js","analyze/assets/member-login-DevlGCmm.js","analyze/assets/road-analyzer-BvKDoFMl.js","analyze/assets/layout-segment-context-S7SspvaA.js","analyze/assets/router-CaQPMJfI.js","analyze/assets/script-CWzCAwPL.js"];
+globalThis.__VINEXT_LAZY_CHUNKS__ = ["analyze/assets/road-analyzer-Hqy28mxj.js","analyze/assets/layout-segment-context-DW2CJKet.js","analyze/assets/script-DUGEPyB5.js"];
 import { env } from "cloudflare:workers";
 import * as __viteRscAsyncHooks from "node:async_hooks";
 import { AsyncLocalStorage as AsyncLocalStorage$1 } from "node:async_hooks";
@@ -5431,44 +5431,6 @@ var VALID_COOKIE_NAME_RE = /^[\x21\x23-\x27\x2A\x2B\x2D\x2E\x30-\x39\x41-\x5A\x5
 function validateCookieName(name) {
 	if (!name || !VALID_COOKIE_NAME_RE.test(name)) throw new Error(`Invalid cookie name: ${JSON.stringify(name)}`);
 }
-/**
-* Validate cookie attribute values (path, domain) to prevent injection
-* via semicolons, newlines, or other control characters.
-*/
-function validateCookieAttributeValue(value, attributeName) {
-	for (let i = 0; i < value.length; i++) {
-		const code = value.charCodeAt(i);
-		if (code <= 31 || code === 127 || value[i] === ";") throw new Error(`Invalid cookie ${attributeName} value: ${JSON.stringify(value)}`);
-	}
-}
-/**
-* Build a Set-Cookie header string from a cookie name, value, and attributes.
-*
-* - Encodes the value with `encodeURIComponent`.
-* - Defaults `Path` to `/` (matching @edge-runtime/cookies and Next.js).
-* - Validates path/domain to reject control characters and semicolons.
-* - Emits attributes in the order: Path, Domain, Max-Age, Expires, HttpOnly,
-*   Secure, SameSite.
-*
-* The caller is responsible for validating the cookie name (typically before
-* mutating any internal state) via `validateCookieName`.
-*/
-function serializeSetCookie(name, value, options) {
-	const parts = [`${name}=${encodeURIComponent(value)}`];
-	const path = options?.path ?? "/";
-	validateCookieAttributeValue(path, "Path");
-	parts.push(`Path=${path}`);
-	if (options?.domain) {
-		validateCookieAttributeValue(options.domain, "Domain");
-		parts.push(`Domain=${options.domain}`);
-	}
-	if (options?.maxAge !== void 0) parts.push(`Max-Age=${options.maxAge}`);
-	if (options?.expires) parts.push(`Expires=${options.expires.toUTCString()}`);
-	if (options?.httpOnly) parts.push("HttpOnly");
-	if (options?.secure) parts.push("Secure");
-	if (options?.sameSite) parts.push(`SameSite=${options.sameSite}`);
-	return parts.join("; ");
-}
 //#endregion
 //#region node_modules/vinext/dist/shims/internal/parse-cookie-header.js
 /**
@@ -5511,7 +5473,7 @@ var _fallbackState$3 = _g$6[_FALLBACK_KEY$4] ??= {
 	draftModeCookieHeader: null,
 	phase: "render"
 };
-var EXPIRED_COOKIE_DATE = (/* @__PURE__ */ new Date(0)).toUTCString();
+(/* @__PURE__ */ new Date(0)).toUTCString();
 function splitMiddlewareSetCookieHeader(value) {
 	const cookies = [];
 	let start = 0;
@@ -5663,10 +5625,6 @@ function _setStatePhase(state, phase) {
 	state.phase = phase;
 	return previous;
 }
-function _areCookiesMutableInCurrentPhase() {
-	const phase = _getState$2().phase;
-	return phase === "action" || phase === "route-handler";
-}
 function setHeadersAccessPhase(phase) {
 	return _setStatePhase(_getState$2(), phase);
 }
@@ -5756,14 +5714,6 @@ var ReadonlyHeadersError = class ReadonlyHeadersError extends Error {
 		throw new ReadonlyHeadersError();
 	}
 };
-var ReadonlyRequestCookiesError$1 = class ReadonlyRequestCookiesError extends Error {
-	constructor() {
-		super("Cookies can only be modified in a Server Action or Route Handler. Read more: https://nextjs.org/docs/app/api-reference/functions/cookies#options");
-	}
-	static callable() {
-		throw new ReadonlyRequestCookiesError();
-	}
-};
 function _decorateRequestApiPromise(promise, target) {
 	return new Proxy(promise, {
 		get(promiseTarget, prop) {
@@ -5786,7 +5736,6 @@ function _decorateRequestApiPromise(promise, target) {
 	});
 }
 var _decoratedHeadersPromises = /* @__PURE__ */ new WeakMap();
-var _decoratedCookiesPromises = /* @__PURE__ */ new WeakMap();
 function _getOrCreateDecoratedRequestApiPromise(cache, target) {
 	const cached = cache.get(target);
 	if (cached) return cached;
@@ -5809,31 +5758,6 @@ function _sealHeaders(headers) {
 		const value = Reflect.get(target, prop, target);
 		return typeof value === "function" ? value.bind(target) : value;
 	} });
-}
-function _wrapMutableCookies(cookies) {
-	return new Proxy(cookies, { get(target, prop) {
-		if (prop === "set" || prop === "delete") return (...args) => {
-			if (!_areCookiesMutableInCurrentPhase()) throw new ReadonlyRequestCookiesError$1();
-			return Reflect.get(target, prop, target).apply(target, args);
-		};
-		const value = Reflect.get(target, prop, target);
-		return typeof value === "function" ? value.bind(target) : value;
-	} });
-}
-function _sealCookies(cookies) {
-	return new Proxy(cookies, { get(target, prop) {
-		if (prop === "set" || prop === "delete") throw new ReadonlyRequestCookiesError$1();
-		const value = Reflect.get(target, prop, target);
-		return typeof value === "function" ? value.bind(target) : value;
-	} });
-}
-function _getMutableCookies(ctx) {
-	if (!ctx.mutableCookies) ctx.mutableCookies = _wrapMutableCookies(new RequestCookies$1(ctx.cookies));
-	return ctx.mutableCookies;
-}
-function _getReadonlyCookies(ctx) {
-	if (!ctx.readonlyCookies) ctx.readonlyCookies = _sealCookies(new RequestCookies$1(ctx.cookies));
-	return ctx.readonlyCookies;
 }
 function _getReadonlyHeaders(ctx) {
 	if (!ctx.readonlyHeaders) ctx.readonlyHeaders = _sealHeaders(ctx.headers);
@@ -5901,22 +5825,6 @@ function headers() {
 	markDynamicUsage();
 	return _getOrCreateDecoratedRequestApiPromise(_decoratedHeadersPromises, _getReadonlyHeaders(state.headersContext));
 }
-/**
-* Cookie jar from the incoming request.
-* Returns a ReadonlyRequestCookies-like object.
-*/
-function cookies() {
-	try {
-		throwIfInsideCacheScope("cookies()");
-	} catch (error) {
-		return _decorateRejectedRequestApiPromise(error);
-	}
-	const state = _getState$2();
-	if (!state.headersContext) return _decorateRejectedRequestApiPromise(/* @__PURE__ */ new Error("cookies() can only be called from a Server Component, Route Handler, or Server Action."));
-	if (state.headersContext.accessError) return _decorateRejectedRequestApiPromise(state.headersContext.accessError);
-	markDynamicUsage();
-	return _getOrCreateDecoratedRequestApiPromise(_decoratedCookiesPromises, _areCookiesMutableInCurrentPhase() ? _getMutableCookies(state.headersContext) : _getReadonlyCookies(state.headersContext));
-}
 /** Accumulated Set-Cookie headers from cookies().set() / .delete() calls */
 /**
 * Get and clear all pending Set-Cookie headers generated by cookies().set()/delete().
@@ -5931,7 +5839,7 @@ function getAndClearPendingCookies() {
 var DRAFT_MODE_COOKIE = "__prerender_bypass";
 (/* @__PURE__ */ new Date(0)).toUTCString();
 function getDraftSecret() {
-	return "f50fda37-c940-4cf1-b848-9c2419936e65";
+	return "a9d41f02-8133-42cd-98ff-bcfff531c27d";
 }
 /**
 * Get any Set-Cookie header generated by draftMode().enable()/disable().
@@ -5948,103 +5856,6 @@ function isDraftModeRequest(request) {
 	if (!cookieHeader) return false;
 	return parseCookieHeader(cookieHeader).get(DRAFT_MODE_COOKIE) === getDraftSecret();
 }
-var RequestCookies$1 = class {
-	_cookies;
-	constructor(cookies) {
-		this._cookies = cookies;
-	}
-	get(name) {
-		const value = this._cookies.get(name);
-		if (value === void 0) return void 0;
-		return {
-			name,
-			value
-		};
-	}
-	getAll(nameOrOptions) {
-		const name = typeof nameOrOptions === "string" ? nameOrOptions : nameOrOptions?.name;
-		const result = [];
-		for (const [cookieName, value] of this._cookies) if (name === void 0 || cookieName === name) result.push({
-			name: cookieName,
-			value
-		});
-		return result;
-	}
-	has(name) {
-		return this._cookies.has(name);
-	}
-	/**
-	* Set a cookie. In Route Handlers and Server Actions, this produces
-	* a Set-Cookie header on the response.
-	*/
-	set(nameOrOptions, value, options) {
-		let cookieName;
-		let cookieValue;
-		let opts;
-		if (typeof nameOrOptions === "string") {
-			cookieName = nameOrOptions;
-			cookieValue = value ?? "";
-			opts = options;
-		} else {
-			cookieName = nameOrOptions.name;
-			cookieValue = nameOrOptions.value;
-			opts = nameOrOptions;
-		}
-		validateCookieName(cookieName);
-		this._cookies.set(cookieName, cookieValue);
-		_getState$2().pendingSetCookies.push(serializeSetCookie(cookieName, cookieValue, opts));
-		return this;
-	}
-	/**
-	* Delete a cookie by emitting an expired Set-Cookie header.
-	*/
-	delete(nameOrOptions) {
-		const name = typeof nameOrOptions === "string" ? nameOrOptions : nameOrOptions.name;
-		const path = typeof nameOrOptions === "string" ? "/" : nameOrOptions.path ?? "/";
-		const domain = typeof nameOrOptions === "string" ? void 0 : nameOrOptions.domain;
-		validateCookieName(name);
-		validateCookieAttributeValue(path, "Path");
-		if (domain) validateCookieAttributeValue(domain, "Domain");
-		this._cookies.delete(name);
-		const parts = [`${name}=`, `Path=${path}`];
-		if (domain) parts.push(`Domain=${domain}`);
-		parts.push(`Expires=${EXPIRED_COOKIE_DATE}`);
-		_getState$2().pendingSetCookies.push(parts.join("; "));
-		return this;
-	}
-	get size() {
-		return this._cookies.size;
-	}
-	[Symbol.iterator]() {
-		const entries = this._cookies.entries();
-		const iter = {
-			[Symbol.iterator]() {
-				return iter;
-			},
-			next() {
-				const { value, done } = entries.next();
-				if (done) return {
-					value: void 0,
-					done: true
-				};
-				const [name, val] = value;
-				return {
-					value: [name, {
-						name,
-						value: val
-					}],
-					done: false
-				};
-			}
-		};
-		return iter;
-	}
-	toString() {
-		const parts = [];
-		for (const [name, value] of this._cookies) parts.push(`${name}=${value}`);
-		return parts.join("; ");
-	}
-};
 //#endregion
 //#region node_modules/vinext/dist/shims/thenable-params.js
 function hasParamProperty(obj, prop) {
@@ -7941,7 +7752,7 @@ var NextURL = class NextURL {
 	* Matches the Next.js API: `request.nextUrl.buildId`.
 	*/
 	get buildId() {
-		return "5de6c700-0197-4072-98e1-f9c0614f1e04";
+		return "2d2f186d-483b-4d9d-b77b-a2ab0ab27904";
 	}
 };
 var RequestCookies = class {
@@ -13063,7 +12874,7 @@ function buildCacheKey(prefix, pathname, suffix) {
 * The suffix mirrors Next.js's separate on-disk app artifacts while keeping the
 * Cloudflare KV key under its 512-byte limit for long pathnames.
 */
-function appIsrCacheKey(pathname, suffix, buildId = "5de6c700-0197-4072-98e1-f9c0614f1e04") {
+function appIsrCacheKey(pathname, suffix, buildId = "2d2f186d-483b-4d9d-b77b-a2ab0ab27904") {
 	return buildCacheKey(buildId ? `app:${buildId}` : "app", pathname, suffix);
 }
 function appIsrHtmlKey(pathname) {
@@ -13392,7 +13203,7 @@ function createAppPageArtifactCompatibility(element, routePattern) {
 			routePattern,
 			rootBoundaryId
 		}),
-		deploymentVersion: "5de6c700-0197-4072-98e1-f9c0614f1e04",
+		deploymentVersion: "2d2f186d-483b-4d9d-b77b-a2ab0ab27904",
 		rootBoundaryId
 	});
 }
@@ -16112,31 +15923,29 @@ async function trialAccess(headers) {
 }
 //#endregion
 //#region app/page.tsx
-var page_exports$2 = /* @__PURE__ */ __exportAll({
+var page_exports = /* @__PURE__ */ __exportAll({
 	default: () => TrialPage,
-	dynamic: () => dynamic$2,
-	metadata: () => metadata$2
+	dynamic: () => dynamic,
+	metadata: () => metadata$1
 });
-var dynamic$2 = "force-dynamic";
-var metadata$2 = {
-	title: "百家樂路圖分析器｜免費線上看路預測與下三路問路工具－MT1399",
-	description: "MT1399 免費百家樂路圖分析器，支援手機與電腦截圖，辨識大路、大眼仔路、小路及曱甴路，整理近期牌路訊號與下一局問路推估；適用 MT、DG、T9、歐博、W、SA 等標準牌路介面。",
+var dynamic = "force-dynamic";
+var metadata$1 = {
+	title: "百家樂牌路分析器｜免登入 20 局免費試用－MT1399",
+	description: "MT1399 百家樂牌路分析器支援手機與電腦截圖，免費試用 20 局，辨識大路、大眼仔路、小路及曱甴路；適用 MT、DG、T9、DB、W、EVO 等標準牌路介面。",
 	keywords: [
 		"百家樂路圖分析器",
 		"百家樂路單分析",
 		"百家樂預測程式",
-		"百家樂下秒路",
 		"百家樂問路",
 		"百家樂",
-		"百家樂預測",
 		"百家樂牌路",
 		"牌路分析",
 		"MT 真人",
 		"DG 真人",
 		"T9 真人",
-		"歐博真人",
+		"DB 真人",
 		"W 真人",
-		"SA 真人",
+		"EVO 真人",
 		"大路",
 		"大眼路",
 		"大眼仔路",
@@ -16151,14 +15960,14 @@ var metadata$2 = {
 		follow: true
 	},
 	openGraph: {
-		title: "百家樂路圖分析器｜免費牌路預測與問路工具｜MT1399",
-		description: "上傳手機或電腦牌路截圖，分析大路、大眼路、小路及曱甴路，並整理下一局牌路訊號。",
+		title: "百家樂牌路分析器｜免登入 20 局免費試用｜MT1399",
+		description: "上傳手機或電腦牌路截圖，免費試用 20 局，分析大路與三條衍生路。",
 		url: "/analyze/",
 		type: "website"
 	},
 	twitter: {
 		card: "summary_large_image",
-		title: "百家樂路圖分析器｜免費牌路預測與問路工具｜MT1399",
+		title: "百家樂牌路分析器｜免登入 20 局免費試用｜MT1399",
 		description: "支援手機與電腦截圖的大路及三條衍生路分析工具。"
 	}
 };
@@ -16169,8 +15978,9 @@ var structuredData = [{
 	url: "https://mt1399.com/analyze/",
 	applicationCategory: "UtilitiesApplication",
 	operatingSystem: "Android, iOS, Windows, macOS",
-	description: "支援手機與電腦截圖，辨識大路與下三路近期訊號的百家樂牌路分析工具。",
+	description: "免登入免費試用 20 局，支援手機與電腦截圖，辨識大路與下三路近期訊號的百家樂牌路分析工具。",
 	featureList: [
+		"免登入 20 局試用",
 		"辨識大路",
 		"辨識大眼仔路",
 		"辨識小路",
@@ -16222,7 +16032,7 @@ var structuredData = [{
 			name: "免費試用版如何計算使用次數？",
 			acceptedAnswer: {
 				"@type": "Answer",
-				text: "只有成功辨識牌路並產生分析結果才會計算一次；無法辨識的圖片不會扣除使用次數。"
+				text: "同一連線 IP 可免費試用 20 局。只有成功辨識牌路並產生分析結果才會計算一次；無法辨識的圖片與範例圖片不會扣除使用次數。"
 			}
 		},
 		{
@@ -16230,7 +16040,7 @@ var structuredData = [{
 			name: "其他百家樂遊戲可以使用嗎？",
 			acceptedAnswer: {
 				"@type": "Answer",
-				text: "可以。MT 真人、DG 真人、T9 真人、歐博真人、W 真人與 SA 真人等遊戲，只要畫面採用可辨識的標準百家樂牌路介面即可上傳分析；特殊版型或截圖不完整時可能無法辨識。"
+				text: "可以。MT 真人、DG、T9、DB、W、EVO 等遊戲，只要畫面採用可辨識的標準百家樂牌路介面即可上傳分析；特殊版型或截圖不完整時可能無法辨識。"
 			}
 		},
 		{
@@ -16301,10 +16111,10 @@ var script_default = /* @__PURE__ */ registerClientReference(() => {
 //#region app/layout.tsx
 var layout_exports = /* @__PURE__ */ __exportAll({
 	default: () => $$wrap_RootLayout,
-	metadata: () => metadata$1
+	metadata: () => metadata
 });
-var GA_MEASUREMENT_ID = "G-YEM5F4XX1D";
-var metadata$1 = {
+var GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+var metadata = {
 	metadataBase: new URL("https://mt1399.com"),
 	title: "百家樂牌路機率分析器",
 	description: "上傳牌路截圖，整理莊、閒、和的歷史樣本比例與連續走勢。",
@@ -16313,7 +16123,7 @@ var metadata$1 = {
 		description: "上傳牌路・即時統計・理性判讀",
 		type: "website",
 		images: [{
-			url: "/og.png",
+			url: "/analyze/og.png",
 			width: 1200,
 			height: 630,
 			alt: "MT1399"
@@ -16323,22 +16133,22 @@ var metadata$1 = {
 		card: "summary_large_image",
 		title: "百家樂牌路機率分析器",
 		description: "上傳牌路・即時統計・理性判讀",
-		images: ["/og.png"]
+		images: ["/analyze/og.png"]
 	},
 	icons: {
 		icon: [{
-			url: "/mt1399-favicon-mt-v4.png",
+			url: "/analyze/mt1399-favicon-mt-v4.png",
 			type: "image/png",
 			sizes: "64x64"
 		}],
-		shortcut: "/mt1399-favicon-mt-v4.png",
-		apple: "/mt1399-favicon-mt-v4.png"
+		shortcut: "/analyze/mt1399-favicon-mt-v4.png",
+		apple: "/analyze/mt1399-favicon-mt-v4.png"
 	}
 };
 function RootLayout({ children }) {
 	return /* @__PURE__ */ (0, import_jsx_runtime_react_server.jsx)("html", {
 		lang: "zh-Hant",
-		children: /* @__PURE__ */ (0, import_jsx_runtime_react_server.jsxs)("body", { children: [children, /* @__PURE__ */ (0, import_jsx_runtime_react_server.jsxs)(import_jsx_runtime_react_server.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime_react_server.jsx)(script_default, {
+		children: /* @__PURE__ */ (0, import_jsx_runtime_react_server.jsxs)("body", { children: [children, GA_MEASUREMENT_ID && /* @__PURE__ */ (0, import_jsx_runtime_react_server.jsxs)(import_jsx_runtime_react_server.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime_react_server.jsx)(script_default, {
 			src: `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`,
 			strategy: "afterInteractive"
 		}), /* @__PURE__ */ (0, import_jsx_runtime_react_server.jsx)(script_default, {
@@ -16356,737 +16166,6 @@ function __vite_rsc_wrap_css__(value, name) {
 	}
 	Object.defineProperty(__wrapper, "name", { value: name });
 	return __wrapper;
-}
-//#endregion
-//#region app/admin/admin-console.tsx
-var admin_console_default = /* @__PURE__ */ registerClientReference(() => {
-	throw new Error("Unexpectedly client reference export 'default' is called on server");
-}, "047dadecdcd5", "default");
-//#endregion
-//#region app/admin/admin-login.tsx
-var admin_login_default = /* @__PURE__ */ registerClientReference(() => {
-	throw new Error("Unexpectedly client reference export 'default' is called on server");
-}, "1aa9accd8b36", "default");
-//#endregion
-//#region app/admin-auth.ts
-var ADMIN_COOKIE = "mt7777_admin_session";
-var SESSION_SECONDS$1 = 3600 * 8;
-function getAdminEnv() {
-	const runtime = env;
-	if (!runtime.ADMIN_USERNAME || !runtime.ADMIN_PASSWORD_HASH || !runtime.ADMIN_SESSION_SECRET) throw new Error("Admin authentication is not configured");
-	return runtime;
-}
-function toHex(bytes) {
-	return Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
-}
-function toBase64Url(bytes) {
-	const binary = String.fromCharCode(...new Uint8Array(bytes));
-	return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
-}
-function timingSafeEqual(left, right) {
-	if (left.length !== right.length) return false;
-	let difference = 0;
-	for (let index = 0; index < left.length; index += 1) difference |= left.charCodeAt(index) ^ right.charCodeAt(index);
-	return difference === 0;
-}
-async function sha256(value) {
-	return toHex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value)));
-}
-async function sign$1(value) {
-	const { ADMIN_SESSION_SECRET } = getAdminEnv();
-	const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(ADMIN_SESSION_SECRET), {
-		name: "HMAC",
-		hash: "SHA-256"
-	}, false, ["sign"]);
-	return toBase64Url(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(value)));
-}
-async function verifyAdminCredentials(username, password) {
-	const config = getAdminEnv();
-	const suppliedHash = await sha256(password);
-	const usernameMatches = timingSafeEqual(username, config.ADMIN_USERNAME);
-	const passwordMatches = timingSafeEqual(suppliedHash, config.ADMIN_PASSWORD_HASH);
-	return usernameMatches && passwordMatches;
-}
-async function createAdminSession() {
-	const payload = `${Math.floor(Date.now() / 1e3) + SESSION_SECONDS$1}.${crypto.randomUUID()}`;
-	return `${payload}.${await sign$1(payload)}`;
-}
-async function verifyAdminSession(token) {
-	if (!token) return false;
-	const parts = token.split(".");
-	if (parts.length !== 3) return false;
-	const [expiresAt, nonce, signature] = parts;
-	if (!/^\d+$/.test(expiresAt) || !nonce || !signature) return false;
-	if (Number(expiresAt) <= Math.floor(Date.now() / 1e3)) return false;
-	return timingSafeEqual(signature, await sign$1(`${expiresAt}.${nonce}`));
-}
-function adminCookieHeader(token) {
-	return `${ADMIN_COOKIE}=${token}; Path=/; Max-Age=${SESSION_SECONDS$1}; HttpOnly; Secure; SameSite=Strict`;
-}
-function clearAdminCookieHeader() {
-	return `${ADMIN_COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict`;
-}
-//#endregion
-//#region app/admin/page.tsx
-var page_exports$1 = /* @__PURE__ */ __exportAll({
-	default: () => AdminPage,
-	dynamic: () => dynamic$1,
-	metadata: () => metadata
-});
-var dynamic$1 = "force-dynamic";
-var metadata = {
-	title: "會員管理｜百家樂牌路機率分析器",
-	description: "建立及管理牌路分析器會員帳號。"
-};
-async function AdminPage() {
-	return await verifyAdminSession((await cookies()).get("mt7777_admin_session")?.value) ? /* @__PURE__ */ (0, import_jsx_runtime_react_server.jsx)(admin_console_default, {}) : /* @__PURE__ */ (0, import_jsx_runtime_react_server.jsx)(admin_login_default, {});
-}
-//#endregion
-//#region app/api/admin/login/route.ts
-var route_exports$12 = /* @__PURE__ */ __exportAll({ POST: () => POST$10 });
-async function POST$10(request) {
-	try {
-		const body = await request.json();
-		const username = body.username?.trim() ?? "";
-		const password = body.password ?? "";
-		if (!username || !password || !await verifyAdminCredentials(username, password)) return Response.json({ error: "帳號或密碼錯誤" }, { status: 401 });
-		const token = await createAdminSession();
-		return Response.json({ ok: true }, { headers: {
-			"Set-Cookie": adminCookieHeader(token),
-			"Cache-Control": "no-store"
-		} });
-	} catch {
-		return Response.json({ error: "登入服務暫時無法使用" }, { status: 503 });
-	}
-}
-//#endregion
-//#region app/api/admin/logout/route.ts
-var route_exports$11 = /* @__PURE__ */ __exportAll({ POST: () => POST$9 });
-async function POST$9() {
-	return Response.json({ ok: true }, { headers: {
-		"Set-Cookie": clearAdminCookieHeader(),
-		"Cache-Control": "no-store"
-	} });
-}
-//#endregion
-//#region app/member-auth.ts
-var MEMBER_COOKIE = "mt7777_member_session";
-var SESSION_SECONDS = 3600 * 24;
-function runtimeSecret() {
-	const value = env.MEMBER_SESSION_SECRET;
-	if (!value) throw new Error("Member authentication is not configured");
-	return value;
-}
-function encode$1(bytes) {
-	return btoa(String.fromCharCode(...new Uint8Array(bytes))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
-}
-function safeEqual$1(left, right) {
-	if (left.length !== right.length) return false;
-	let difference = 0;
-	for (let index = 0; index < left.length; index += 1) difference |= left.charCodeAt(index) ^ right.charCodeAt(index);
-	return difference === 0;
-}
-async function sign(payload) {
-	const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(runtimeSecret()), {
-		name: "HMAC",
-		hash: "SHA-256"
-	}, false, ["sign"]);
-	return encode$1(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload)));
-}
-function taipeiDate(date = /* @__PURE__ */ new Date()) {
-	const parts = new Intl.DateTimeFormat("en-CA", {
-		timeZone: "Asia/Taipei",
-		year: "numeric",
-		month: "2-digit",
-		day: "2-digit"
-	}).formatToParts(date);
-	const value = Object.fromEntries(parts.map((part) => [part.type, part.value]));
-	return `${value.year}-${value.month}-${value.day}`;
-}
-function dateAfterDays(days) {
-	return taipeiDate(new Date(Date.now() + days * 864e5));
-}
-async function createMemberSession(memberId) {
-	const payload = `${memberId}.${Math.floor(Date.now() / 1e3) + SESSION_SECONDS}.${crypto.randomUUID()}`;
-	return `${payload}.${await sign(payload)}`;
-}
-async function memberIdFromSession(token) {
-	if (!token) return null;
-	const parts = token.split(".");
-	if (parts.length !== 4) return null;
-	const [memberId, expiresAt, nonce, signature] = parts;
-	if (!/^\d+$/.test(memberId) || !/^\d+$/.test(expiresAt) || !nonce || !signature) return null;
-	if (Number(expiresAt) <= Math.floor(Date.now() / 1e3)) return null;
-	return safeEqual$1(signature, await sign(`${memberId}.${expiresAt}.${nonce}`)) ? Number(memberId) : null;
-}
-function cookieValue(request, name) {
-	const cookie = request.headers.get("cookie") ?? "";
-	for (const part of cookie.split(";")) {
-		const [key, ...rest] = part.trim().split("=");
-		if (key === name) return rest.join("=");
-	}
-}
-async function getMemberView(memberId) {
-	const today = taipeiDate();
-	const row = await getD1().prepare(`
-    SELECT m.id, m.username, m.label, m.expires_at AS expiresAt,
-           m.daily_limit AS dailyLimit, COALESCE(u.count, 0) AS usedToday,
-           m.live_analysis_enabled AS liveAnalysisEnabled,
-           m.learning_enabled AS learningEnabled
-    FROM members m
-    LEFT JOIN analysis_usage u ON u.member_id = m.id AND u.usage_date = ?
-    WHERE m.id = ? AND m.status = 'active' AND m.expires_at >= ?
-    LIMIT 1
-  `).bind(today, memberId, today).first();
-	return row ? {
-		...row,
-		liveAnalysisEnabled: Boolean(row.liveAnalysisEnabled),
-		learningEnabled: Boolean(row.learningEnabled)
-	} : null;
-}
-async function memberFromToken(token) {
-	const memberId = await memberIdFromSession(token);
-	return memberId ? getMemberView(memberId) : null;
-}
-function memberCookieHeader(token) {
-	return `${MEMBER_COOKIE}=${token}; Path=/; Max-Age=${SESSION_SECONDS}; HttpOnly; Secure; SameSite=Strict`;
-}
-function clearMemberCookieHeader() {
-	return `${MEMBER_COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict`;
-}
-//#endregion
-//#region app/api-auth.ts
-async function isAdminRequest(request) {
-	return verifyAdminSession(cookieValue(request, ADMIN_COOKIE));
-}
-//#endregion
-//#region app/password.ts
-var ITERATIONS = 1e5;
-function encode(bytes) {
-	return btoa(String.fromCharCode(...bytes)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
-}
-function decode(value) {
-	const normalized = value.replace(/-/g, "+").replace(/_/g, "/");
-	const binary = atob(normalized.padEnd(Math.ceil(normalized.length / 4) * 4, "="));
-	return Uint8Array.from(binary, (character) => character.charCodeAt(0));
-}
-function safeEqual(left, right) {
-	if (left.length !== right.length) return false;
-	let difference = 0;
-	for (let index = 0; index < left.length; index += 1) difference |= left.charCodeAt(index) ^ right.charCodeAt(index);
-	return difference === 0;
-}
-async function derive(password, salt) {
-	const baseKey = await crypto.subtle.importKey("raw", new TextEncoder().encode(password), "PBKDF2", false, ["deriveBits"]);
-	const bits = await crypto.subtle.deriveBits({
-		name: "PBKDF2",
-		hash: "SHA-256",
-		salt,
-		iterations: ITERATIONS
-	}, baseKey, 256);
-	return encode(new Uint8Array(bits));
-}
-async function hashPassword(password) {
-	const salt = crypto.getRandomValues(new Uint8Array(16));
-	return {
-		hash: await derive(password, salt),
-		salt: encode(salt)
-	};
-}
-async function verifyPassword(password, expectedHash, encodedSalt) {
-	return safeEqual(await derive(password, decode(encodedSalt)), expectedHash);
-}
-//#endregion
-//#region app/api/admin/members/route.ts
-var route_exports$10 = /* @__PURE__ */ __exportAll({
-	DELETE: () => DELETE$1,
-	GET: () => GET$3,
-	PATCH: () => PATCH$1,
-	POST: () => POST$8
-});
-var PERMANENT_EXPIRES = "9999-12-31";
-function parseDuration(value) {
-	if (value === "permanent") return "permanent";
-	const duration = Number(value);
-	return [
-		7,
-		30,
-		90,
-		180,
-		365
-	].includes(duration) ? duration : null;
-}
-function expiryForDuration(duration) {
-	return duration === "permanent" ? PERMANENT_EXPIRES : dateAfterDays(duration);
-}
-function serializeMember(member) {
-	return {
-		...member,
-		liveAnalysisEnabled: Boolean(member.liveAnalysisEnabled),
-		learningEnabled: Boolean(member.learningEnabled),
-		isOnline: Boolean(member.isOnline)
-	};
-}
-function randomText(alphabet, length) {
-	const values = crypto.getRandomValues(new Uint32Array(length));
-	return Array.from(values, (value) => alphabet[value % alphabet.length]).join("");
-}
-function createUsername() {
-	return `MT-${randomText("0123456789", 6)}`;
-}
-function createPassword() {
-	return randomText("ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$", 12);
-}
-async function listMembers() {
-	const today = taipeiDate();
-	return (await getD1().prepare(`
-    SELECT m.id, m.username, m.label, m.expires_at AS expires,
-           m.daily_limit AS dailyLimit, COALESCE(u.count, 0) AS usedToday,
-           m.live_analysis_enabled AS liveAnalysisEnabled,
-           m.learning_enabled AS learningEnabled,
-           m.last_login_at AS lastLoginAt, m.last_login_device AS lastLoginDevice,
-           CASE WHEN m.last_seen_at IS NOT NULL AND m.last_seen_at >= datetime('now', '-2 minutes') THEN 1 ELSE 0 END AS isOnline,
-           CASE WHEN m.expires_at < ? THEN 'expired' ELSE m.status END AS status
-    FROM members m
-    LEFT JOIN analysis_usage u ON u.member_id = m.id AND u.usage_date = ?
-    ORDER BY m.created_at DESC, m.id DESC
-  `).bind(today, today).all()).results.map(serializeMember);
-}
-async function GET$3(request) {
-	if (!await isAdminRequest(request)) return Response.json({ error: "未授權" }, { status: 401 });
-	try {
-		return Response.json({ members: await listMembers() }, { headers: { "Cache-Control": "no-store" } });
-	} catch (error) {
-		console.error("Unable to list members", error);
-		return Response.json({ error: "目前無法讀取會員資料" }, { status: 503 });
-	}
-}
-async function POST$8(request) {
-	if (!await isAdminRequest(request)) return Response.json({ error: "未授權" }, { status: 401 });
-	try {
-		const body = await request.json();
-		const label = body.label?.trim().slice(0, 60) || "未命名會員";
-		const duration = parseDuration(body.duration) ?? 30;
-		const dailyLimit = [
-			5,
-			10,
-			20,
-			50
-		].includes(Number(body.dailyLimit)) ? Number(body.dailyLimit) : 10;
-		const liveAnalysisEnabled = body.liveAnalysisEnabled === true;
-		const learningEnabled = body.learningEnabled === true;
-		const password = createPassword();
-		const passwordData = await hashPassword(password);
-		const expires = expiryForDuration(duration);
-		let username = "";
-		for (let attempt = 0; attempt < 8; attempt += 1) {
-			username = createUsername();
-			try {
-				await getD1().prepare(`
-          INSERT INTO members (
-            username, password_hash, password_salt, label, expires_at, daily_limit,
-            live_analysis_enabled, learning_enabled, status
-          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'active')
-        `).bind(username, passwordData.hash, passwordData.salt, label, expires, dailyLimit, liveAnalysisEnabled ? 1 : 0, learningEnabled ? 1 : 0).run();
-				break;
-			} catch (error) {
-				if (attempt === 7) throw error;
-				username = "";
-			}
-		}
-		if (!username) throw new Error("Unable to allocate username");
-		const member = await getD1().prepare(`
-      SELECT id, username, label, expires_at AS expires, daily_limit AS dailyLimit,
-             0 AS usedToday, live_analysis_enabled AS liveAnalysisEnabled,
-             learning_enabled AS learningEnabled,
-             last_login_at AS lastLoginAt, last_login_device AS lastLoginDevice,
-             0 AS isOnline,
-             status FROM members WHERE username = ? LIMIT 1
-    `).bind(username).first();
-		return Response.json({
-			member: member ? serializeMember(member) : null,
-			credentials: {
-				username,
-				password
-			}
-		}, { status: 201 });
-	} catch (error) {
-		console.error("Unable to create member", error);
-		return Response.json({ error: "建立會員帳號失敗" }, { status: 503 });
-	}
-}
-async function PATCH$1(request) {
-	if (!await isAdminRequest(request)) return Response.json({ error: "未授權" }, { status: 401 });
-	try {
-		const body = await request.json();
-		const id = Number(body.id);
-		if (!Number.isInteger(id) || id <= 0) return Response.json({ error: "會員資料格式錯誤" }, { status: 400 });
-		const hasDuration = body.duration !== void 0;
-		const duration = hasDuration ? parseDuration(body.duration) : null;
-		const hasLiveSetting = typeof body.liveAnalysisEnabled === "boolean";
-		const hasLearningSetting = typeof body.learningEnabled === "boolean";
-		if (!hasLiveSetting && !hasLearningSetting && !hasDuration) return Response.json({ error: "沒有可更新的會員設定" }, { status: 400 });
-		if (hasDuration && !duration) return Response.json({ error: "帳號效期格式錯誤" }, { status: 400 });
-		const database = getD1();
-		const assignments = [];
-		const values = [];
-		if (duration) {
-			assignments.push("expires_at = ?");
-			values.push(expiryForDuration(duration));
-		}
-		if (hasLiveSetting) {
-			assignments.push("live_analysis_enabled = ?");
-			values.push(body.liveAnalysisEnabled ? 1 : 0);
-		}
-		if (hasLearningSetting) {
-			assignments.push("learning_enabled = ?");
-			values.push(body.learningEnabled ? 1 : 0);
-		}
-		await database.prepare(`UPDATE members SET ${assignments.join(", ")} WHERE id = ?`).bind(...values, id).run();
-		const today = taipeiDate();
-		const member = await database.prepare(`
-      SELECT m.id, m.username, m.label, m.expires_at AS expires,
-             m.daily_limit AS dailyLimit, COALESCE(u.count, 0) AS usedToday,
-             m.live_analysis_enabled AS liveAnalysisEnabled,
-             m.learning_enabled AS learningEnabled,
-             m.last_login_at AS lastLoginAt, m.last_login_device AS lastLoginDevice,
-             CASE WHEN m.last_seen_at IS NOT NULL AND m.last_seen_at >= datetime('now', '-2 minutes') THEN 1 ELSE 0 END AS isOnline,
-             CASE WHEN m.expires_at < ? THEN 'expired' ELSE m.status END AS status
-      FROM members m
-      LEFT JOIN analysis_usage u ON u.member_id = m.id AND u.usage_date = ?
-      WHERE m.id = ? LIMIT 1
-    `).bind(today, today, id).first();
-		if (!member) return Response.json({ error: "找不到此會員帳號" }, { status: 404 });
-		return Response.json({ member: serializeMember(member) }, { headers: { "Cache-Control": "no-store" } });
-	} catch (error) {
-		console.error("Unable to update member settings", error);
-		return Response.json({ error: "更新會員設定失敗" }, { status: 503 });
-	}
-}
-async function DELETE$1(request) {
-	if (!await isAdminRequest(request)) return Response.json({ error: "未授權" }, { status: 401 });
-	try {
-		const body = await request.json();
-		const id = Number(body.id);
-		if (!Number.isInteger(id) || id <= 0) return Response.json({ error: "會員資料格式錯誤" }, { status: 400 });
-		const database = getD1();
-		if (!await database.prepare("SELECT id FROM members WHERE id = ? LIMIT 1").bind(id).first()) return Response.json({ error: "找不到此會員帳號" }, { status: 404 });
-		await database.batch([database.prepare("DELETE FROM analysis_usage WHERE member_id = ?").bind(id), database.prepare("DELETE FROM members WHERE id = ?").bind(id)]);
-		return Response.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
-	} catch (error) {
-		console.error("Unable to delete member", error);
-		return Response.json({ error: "刪除會員帳號失敗" }, { status: 503 });
-	}
-}
-//#endregion
-//#region app/api/admin/members/status/route.ts
-var route_exports$9 = /* @__PURE__ */ __exportAll({ POST: () => POST$7 });
-async function POST$7(request) {
-	if (!await isAdminRequest(request)) return Response.json({ error: "未授權" }, { status: 401 });
-	try {
-		const body = await request.json();
-		const id = Number(body.id);
-		const status = body.status === "active" ? "active" : body.status === "paused" ? "paused" : null;
-		if (!Number.isInteger(id) || id <= 0 || !status) return Response.json({ error: "資料格式錯誤" }, { status: 400 });
-		if (status === "paused") await getD1().prepare("UPDATE members SET status = 'paused', last_seen_at = NULL WHERE id = ?").bind(id).run();
-		else await getD1().prepare("UPDATE members SET status = 'active' WHERE id = ?").bind(id).run();
-		return Response.json({ ok: true });
-	} catch {
-		return Response.json({ error: "更新會員狀態失敗" }, { status: 503 });
-	}
-}
-//#endregion
-//#region app/api/admin/trials/route.ts
-var route_exports$8 = /* @__PURE__ */ __exportAll({
-	DELETE: () => DELETE,
-	GET: () => GET$2
-});
-function validId$1(value) {
-	return typeof value === "string" && /^[a-f0-9]{64}$/.test(value);
-}
-async function GET$2(request) {
-	if (!await isAdminRequest(request)) return Response.json({ error: "未授權" }, { status: 401 });
-	try {
-		const result = await getD1().prepare(`
-      SELECT ip_hash AS id, ip_address AS ipAddress, device, count AS used,
-             status, first_used_at AS firstSeen, updated_at AS lastSeen
-      FROM trial_usage
-      ORDER BY updated_at DESC, first_used_at DESC
-    `).all();
-		return Response.json({ trials: result.results }, { headers: { "Cache-Control": "no-store" } });
-	} catch (error) {
-		console.error("Unable to list trial visitors", error);
-		return Response.json({ error: "目前無法讀取試用版紀錄" }, { status: 503 });
-	}
-}
-async function DELETE(request) {
-	if (!await isAdminRequest(request)) return Response.json({ error: "未授權" }, { status: 401 });
-	try {
-		const body = await request.json();
-		if (!validId$1(body.id)) return Response.json({ error: "試用紀錄格式錯誤" }, { status: 400 });
-		if (!(await getD1().prepare("DELETE FROM trial_usage WHERE ip_hash = ?").bind(body.id).run()).meta.changes) return Response.json({ error: "找不到此試用紀錄" }, { status: 404 });
-		return Response.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
-	} catch (error) {
-		console.error("Unable to delete trial visitor", error);
-		return Response.json({ error: "刪除試用紀錄失敗" }, { status: 503 });
-	}
-}
-//#endregion
-//#region app/api/admin/trials/status/route.ts
-var route_exports$7 = /* @__PURE__ */ __exportAll({ POST: () => POST$6 });
-function validId(value) {
-	return typeof value === "string" && /^[a-f0-9]{64}$/.test(value);
-}
-async function POST$6(request) {
-	if (!await isAdminRequest(request)) return Response.json({ error: "未授權" }, { status: 401 });
-	try {
-		const body = await request.json();
-		const status = body.status === "active" ? "active" : body.status === "disabled" ? "disabled" : null;
-		if (!validId(body.id) || !status) return Response.json({ error: "資料格式錯誤" }, { status: 400 });
-		if (!(await getD1().prepare("UPDATE trial_usage SET status = ? WHERE ip_hash = ?").bind(status, body.id).run()).meta.changes) return Response.json({ error: "找不到此試用紀錄" }, { status: 404 });
-		return Response.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
-	} catch (error) {
-		console.error("Unable to update trial visitor", error);
-		return Response.json({ error: "更新試用狀態失敗" }, { status: 503 });
-	}
-}
-//#endregion
-//#region app/learning-auth.ts
-async function learningOwner(request) {
-	const memberToken = cookieValue(request, MEMBER_COOKIE);
-	if (memberToken) {
-		const memberId = await memberIdFromSession(memberToken);
-		if (!(memberId ? await getMemberView(memberId) : null)?.learningEnabled) return null;
-		return {
-			type: "member",
-			memberId,
-			trialIpHash: null
-		};
-	}
-	return null;
-}
-function ownerWhere(owner) {
-	return owner.type === "member" ? {
-		clause: "member_id = ?",
-		value: owner.memberId
-	} : {
-		clause: "trial_ip_hash = ?",
-		value: owner.trialIpHash
-	};
-}
-//#endregion
-//#region app/api/learning/route.ts
-var route_exports$6 = /* @__PURE__ */ __exportAll({
-	GET: () => GET$1,
-	PATCH: () => PATCH,
-	POST: () => POST$5
-});
-var MODEL_VERSION = "v3-feedback-calibration";
-var MIN_BUCKET_SAMPLES = 12;
-function isOneOf(value, values) {
-	return typeof value === "string" && values.includes(value);
-}
-async function hashSnapshot(value) {
-	const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
-	return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
-}
-async function profile() {
-	const rows = (await getD1().prepare(`
-    SELECT feature_bucket AS featureBucket,
-           COUNT(*) AS total,
-           SUM(CASE WHEN actual_outcome IN ('B', 'P') THEN 1 ELSE 0 END) AS decisive,
-           SUM(CASE WHEN is_correct = 1 THEN 1 ELSE 0 END) AS correct,
-           SUM(CASE WHEN actual_outcome = 'T' THEN 1 ELSE 0 END) AS ties
-    FROM learning_predictions
-    WHERE feedback_at IS NOT NULL AND model_version = ?
-    GROUP BY feature_bucket
-  `).bind(MODEL_VERSION).all()).results.map((row) => ({
-		...row,
-		total: Number(row.total ?? 0),
-		decisive: Number(row.decisive ?? 0),
-		correct: Number(row.correct ?? 0),
-		ties: Number(row.ties ?? 0)
-	}));
-	return {
-		modelVersion: MODEL_VERSION,
-		minimumSamples: MIN_BUCKET_SAMPLES,
-		totalFeedback: rows.reduce((sum, row) => sum + row.total, 0),
-		decisiveFeedback: rows.reduce((sum, row) => sum + row.decisive, 0),
-		buckets: Object.fromEntries(rows.filter((row) => row.decisive >= MIN_BUCKET_SAMPLES).map((row) => [row.featureBucket, {
-			decisive: row.decisive,
-			correct: row.correct,
-			ties: row.ties
-		}]))
-	};
-}
-async function GET$1(request) {
-	try {
-		if (!await learningOwner(request)) return Response.json({ error: "目前無法使用學習功能" }, { status: 401 });
-		return Response.json({ profile: await profile() }, { headers: { "Cache-Control": "no-store" } });
-	} catch (error) {
-		console.error("Unable to read learning profile", error);
-		return Response.json({ error: "目前無法讀取學習進度" }, { status: 503 });
-	}
-}
-async function POST$5(request) {
-	try {
-		const owner = await learningOwner(request);
-		if (!owner) return Response.json({ error: "目前無法建立學習紀錄" }, { status: 401 });
-		const body = await request.json();
-		if (!isOneOf(body.predictedSide, ["B", "P"]) || !isOneOf(body.signalClass, [
-			"ask",
-			"composite",
-			"basic"
-		]) || !isOneOf(body.strengthClass, [
-			"watch",
-			"low",
-			"medium"
-		]) || !isOneOf(body.captureMode, ["upload", "live"]) || typeof body.signature !== "string" || body.signature.length < 3 || body.signature.length > 2e3) return Response.json({ error: "學習紀錄格式錯誤" }, { status: 400 });
-		const bankerTenths = Number(body.bankerTenths);
-		if (!Number.isInteger(bankerTenths) || bankerTenths < 450 || bankerTenths > 550) return Response.json({ error: "機率資料格式錯誤" }, { status: 400 });
-		const database = getD1();
-		const where = ownerWhere(owner);
-		const recent = await database.prepare(`
-      SELECT COUNT(*) AS count FROM learning_predictions
-      WHERE ${where.clause} AND created_at >= datetime('now', '-1 minute')
-    `).bind(where.value).first();
-		if (Number(recent?.count ?? 0) >= 12) return Response.json({ error: "學習紀錄建立過於頻繁" }, { status: 429 });
-		const featureBucket = `${body.signalClass}:${body.strengthClass}:${body.predictedSide}`;
-		const id = crypto.randomUUID();
-		await database.prepare(`
-      INSERT INTO learning_predictions (
-        id, member_id, trial_ip_hash, model_version, capture_mode, predicted_side,
-        banker_tenths, signal_class, strength_class, feature_bucket, snapshot_hash
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).bind(id, owner.memberId, owner.trialIpHash, MODEL_VERSION, body.captureMode, body.predictedSide, bankerTenths, body.signalClass, body.strengthClass, featureBucket, await hashSnapshot(body.signature)).run();
-		return Response.json({ prediction: {
-			id,
-			predictedSide: body.predictedSide,
-			featureBucket,
-			modelVersion: MODEL_VERSION
-		} }, { status: 201 });
-	} catch (error) {
-		console.error("Unable to create learning prediction", error);
-		return Response.json({ error: "目前無法建立學習紀錄" }, { status: 503 });
-	}
-}
-async function PATCH(request) {
-	try {
-		const owner = await learningOwner(request);
-		if (!owner) return Response.json({ error: "目前無法回報開牌結果" }, { status: 401 });
-		const body = await request.json();
-		if (typeof body.predictionId !== "string" || body.predictionId.length > 80 || !isOneOf(body.actualOutcome, [
-			"B",
-			"P",
-			"T"
-		])) return Response.json({ error: "開牌結果格式錯誤" }, { status: 400 });
-		const database = getD1();
-		const where = ownerWhere(owner);
-		const current = await database.prepare(`
-      SELECT predicted_side AS predictedSide
-      FROM learning_predictions
-      WHERE id = ? AND ${where.clause} AND feedback_at IS NULL
-      LIMIT 1
-    `).bind(body.predictionId, where.value).first();
-		if (!current) return Response.json({ error: "此局已回報或紀錄不存在" }, { status: 409 });
-		const outcome = body.actualOutcome;
-		const correct = outcome === "T" ? null : outcome === current.predictedSide;
-		const updated = await database.prepare(`
-      UPDATE learning_predictions
-      SET actual_outcome = ?, is_correct = ?, feedback_source = ?, feedback_at = CURRENT_TIMESTAMP
-      WHERE id = ? AND ${where.clause} AND feedback_at IS NULL
-    `).bind(outcome, correct === null ? null : correct ? 1 : 0, body.detected === true ? "detected-confirmed" : "manual", body.predictionId, where.value).run();
-		if (Number(updated.meta?.changes ?? 0) !== 1) return Response.json({ error: "此局已完成回報" }, { status: 409 });
-		return Response.json({
-			learned: true,
-			correct,
-			actualOutcome: outcome,
-			predictedSide: current.predictedSide,
-			profile: await profile()
-		});
-	} catch (error) {
-		console.error("Unable to save learning feedback", error);
-		return Response.json({ error: "目前無法儲存開牌結果" }, { status: 503 });
-	}
-}
-//#endregion
-//#region app/api/member/login/route.ts
-var route_exports$5 = /* @__PURE__ */ __exportAll({ POST: () => POST$4 });
-async function POST$4(request) {
-	try {
-		const body = await request.json();
-		const username = body.username?.trim().toUpperCase() ?? "";
-		const password = body.password ?? "";
-		if (!username || !password) return Response.json({ error: "請輸入會員帳號與密碼" }, { status: 400 });
-		const member = await getD1().prepare(`
-      SELECT id, password_hash AS passwordHash, password_salt AS passwordSalt,
-             status, expires_at AS expiresAt
-      FROM members WHERE username = ? LIMIT 1
-    `).bind(username).first();
-		if (!(member && member.status === "active" && member.expiresAt >= taipeiDate() && await verifyPassword(password, member.passwordHash, member.passwordSalt)) || !member) return Response.json({ error: "帳號或密碼錯誤，或帳號已停用" }, { status: 401 });
-		const device = deviceLabel(request.headers.get("user-agent") || "");
-		await getD1().prepare("UPDATE members SET last_login_at = CURRENT_TIMESTAMP, last_seen_at = CURRENT_TIMESTAMP, last_login_device = ? WHERE id = ?").bind(device, member.id).run();
-		const token = await createMemberSession(member.id);
-		return Response.json({ ok: true }, { headers: {
-			"Set-Cookie": memberCookieHeader(token),
-			"Cache-Control": "no-store"
-		} });
-	} catch {
-		return Response.json({ error: "登入服務暫時無法使用" }, { status: 503 });
-	}
-}
-//#endregion
-//#region app/api/member/logout/route.ts
-var route_exports$4 = /* @__PURE__ */ __exportAll({ POST: () => POST$3 });
-async function POST$3(request) {
-	const memberId = await memberIdFromSession(cookieValue(request, MEMBER_COOKIE)).catch(() => null);
-	if (memberId) await getD1().prepare("UPDATE members SET last_seen_at = NULL WHERE id = ?").bind(memberId).run().catch(() => void 0);
-	return Response.json({ ok: true }, { headers: {
-		"Set-Cookie": clearMemberCookieHeader(),
-		"Cache-Control": "no-store"
-	} });
-}
-//#endregion
-//#region app/api/member/presence/route.ts
-var route_exports$3 = /* @__PURE__ */ __exportAll({ POST: () => POST$2 });
-async function POST$2(request) {
-	try {
-		const memberId = await memberIdFromSession(cookieValue(request, MEMBER_COOKIE));
-		if (!memberId) return Response.json({ error: "請重新登入" }, { status: 401 });
-		if (!await getMemberView(memberId)) return Response.json({ error: "帳號已到期或停用" }, { status: 403 });
-		await getD1().prepare("UPDATE members SET last_seen_at = CURRENT_TIMESTAMP WHERE id = ?").bind(memberId).run();
-		return Response.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
-	} catch {
-		return Response.json({ error: "目前無法更新在線狀態" }, { status: 503 });
-	}
-}
-//#endregion
-//#region app/api/member/use/route.ts
-var route_exports$2 = /* @__PURE__ */ __exportAll({ POST: () => POST$1 });
-async function POST$1(request) {
-	try {
-		const memberId = await memberIdFromSession(cookieValue(request, MEMBER_COOKIE));
-		if (!memberId) return Response.json({ error: "請重新登入" }, { status: 401 });
-		const member = await getMemberView(memberId);
-		if (!member) return Response.json({ error: "帳號已到期或停用" }, { status: 403 });
-		if ((await request.json().catch(() => ({}))).mode === "live" && !member.liveAnalysisEnabled) return Response.json({ error: "畫面即時分析尚未開通，請聯繫 MT1399" }, { status: 403 });
-		const result = await getD1().prepare(`
-      INSERT INTO analysis_usage (member_id, usage_date, count, updated_at)
-      VALUES (?, ?, 1, CURRENT_TIMESTAMP)
-      ON CONFLICT(member_id, usage_date) DO UPDATE SET
-        count = count + 1,
-        updated_at = CURRENT_TIMESTAMP
-      WHERE count < ?
-      RETURNING count
-    `).bind(memberId, taipeiDate(), member.dailyLimit).first();
-		if (!result) return Response.json({ error: "今日分析次數已用完" }, { status: 429 });
-		return Response.json({
-			usedToday: result.count,
-			remaining: Math.max(0, member.dailyLimit - result.count)
-		});
-	} catch {
-		return Response.json({ error: "目前無法記錄分析次數" }, { status: 503 });
-	}
 }
 //#endregion
 //#region app/api/trial/status/route.ts
@@ -17143,28 +16222,6 @@ async function POST(request) {
 	}
 }
 //#endregion
-//#region app/member-login.tsx
-var member_login_default = /* @__PURE__ */ registerClientReference(() => {
-	throw new Error("Unexpectedly client reference export 'default' is called on server");
-}, "3d17314413eb", "default");
-//#endregion
-//#region app/login/page.tsx
-var page_exports = /* @__PURE__ */ __exportAll({
-	default: () => Home,
-	dynamic: () => dynamic
-});
-var dynamic = "force-dynamic";
-async function Home() {
-	const cookieStore = await cookies();
-	let member = null;
-	try {
-		member = await memberFromToken(cookieStore.get(MEMBER_COOKIE)?.value);
-	} catch {
-		member = null;
-	}
-	return member ? /* @__PURE__ */ (0, import_jsx_runtime_react_server.jsx)(road_analyzer_default, { member }) : /* @__PURE__ */ (0, import_jsx_runtime_react_server.jsx)(member_login_default, {});
-}
-//#endregion
 //#region \0virtual:vinext-rsc-entry
 var renderToReadableStream = createRscRenderer(renderToReadableStream$1);
 function _getSSRFontStyles() {
@@ -17188,19 +16245,6 @@ function __VINEXT_CLASS(routeIdx) { return ((routeIdx) => {
       case 0: return new Map([[0, "static"]]);
       case 1: return new Map([[0, "static"]]);
       case 2: return new Map([[0, "static"]]);
-      case 3: return new Map([[0, "static"]]);
-      case 4: return new Map([[0, "static"]]);
-      case 5: return new Map([[0, "static"]]);
-      case 6: return new Map([[0, "static"]]);
-      case 7: return new Map([[0, "static"]]);
-      case 8: return new Map([[0, "static"]]);
-      case 9: return new Map([[0, "static"]]);
-      case 10: return new Map([[0, "static"]]);
-      case 11: return new Map([[0, "static"]]);
-      case 12: return new Map([[0, "static"]]);
-      case 13: return new Map([[0, "static"]]);
-      case 14: return new Map([[0, "static"]]);
-      case 15: return new Map([[0, "static"]]);
       default: return null;
     }
   })(routeIdx); }
@@ -17225,7 +16269,7 @@ var routes = [
 		isDynamic: false,
 		params: [],
 		rootParamNames: [],
-		page: page_exports$2,
+		page: page_exports,
 		routeHandler: null,
 		layouts: [layout_exports],
 		routeSegments: [],
@@ -17248,534 +16292,6 @@ var routes = [
 	{
 		__buildTimeClassifications: __VINEXT_CLASS(1),
 		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(1) : null,
-		ids: {
-			"route": "route:/admin",
-			"page": "page:/admin",
-			"routeHandler": null,
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/admin",
-		patternParts: ["admin"],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: page_exports$1,
-		routeHandler: null,
-		layouts: [layout_exports],
-		routeSegments: ["admin"],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(2),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(2) : null,
-		ids: {
-			"route": "route:/api/admin/login",
-			"page": null,
-			"routeHandler": "route-handler:/api/admin/login",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/admin/login",
-		patternParts: [
-			"api",
-			"admin",
-			"login"
-		],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$12,
-		layouts: [layout_exports],
-		routeSegments: [
-			"api",
-			"admin",
-			"login"
-		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(3),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(3) : null,
-		ids: {
-			"route": "route:/api/admin/logout",
-			"page": null,
-			"routeHandler": "route-handler:/api/admin/logout",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/admin/logout",
-		patternParts: [
-			"api",
-			"admin",
-			"logout"
-		],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$11,
-		layouts: [layout_exports],
-		routeSegments: [
-			"api",
-			"admin",
-			"logout"
-		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(4),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(4) : null,
-		ids: {
-			"route": "route:/api/admin/members",
-			"page": null,
-			"routeHandler": "route-handler:/api/admin/members",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/admin/members",
-		patternParts: [
-			"api",
-			"admin",
-			"members"
-		],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$10,
-		layouts: [layout_exports],
-		routeSegments: [
-			"api",
-			"admin",
-			"members"
-		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(5),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(5) : null,
-		ids: {
-			"route": "route:/api/admin/members/status",
-			"page": null,
-			"routeHandler": "route-handler:/api/admin/members/status",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/admin/members/status",
-		patternParts: [
-			"api",
-			"admin",
-			"members",
-			"status"
-		],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$9,
-		layouts: [layout_exports],
-		routeSegments: [
-			"api",
-			"admin",
-			"members",
-			"status"
-		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(6),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(6) : null,
-		ids: {
-			"route": "route:/api/admin/trials",
-			"page": null,
-			"routeHandler": "route-handler:/api/admin/trials",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/admin/trials",
-		patternParts: [
-			"api",
-			"admin",
-			"trials"
-		],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$8,
-		layouts: [layout_exports],
-		routeSegments: [
-			"api",
-			"admin",
-			"trials"
-		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(7),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(7) : null,
-		ids: {
-			"route": "route:/api/admin/trials/status",
-			"page": null,
-			"routeHandler": "route-handler:/api/admin/trials/status",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/admin/trials/status",
-		patternParts: [
-			"api",
-			"admin",
-			"trials",
-			"status"
-		],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$7,
-		layouts: [layout_exports],
-		routeSegments: [
-			"api",
-			"admin",
-			"trials",
-			"status"
-		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(8),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(8) : null,
-		ids: {
-			"route": "route:/api/learning",
-			"page": null,
-			"routeHandler": "route-handler:/api/learning",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/learning",
-		patternParts: ["api", "learning"],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$6,
-		layouts: [layout_exports],
-		routeSegments: ["api", "learning"],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(9),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(9) : null,
-		ids: {
-			"route": "route:/api/member/login",
-			"page": null,
-			"routeHandler": "route-handler:/api/member/login",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/member/login",
-		patternParts: [
-			"api",
-			"member",
-			"login"
-		],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$5,
-		layouts: [layout_exports],
-		routeSegments: [
-			"api",
-			"member",
-			"login"
-		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(10),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(10) : null,
-		ids: {
-			"route": "route:/api/member/logout",
-			"page": null,
-			"routeHandler": "route-handler:/api/member/logout",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/member/logout",
-		patternParts: [
-			"api",
-			"member",
-			"logout"
-		],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$4,
-		layouts: [layout_exports],
-		routeSegments: [
-			"api",
-			"member",
-			"logout"
-		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(11),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(11) : null,
-		ids: {
-			"route": "route:/api/member/presence",
-			"page": null,
-			"routeHandler": "route-handler:/api/member/presence",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/member/presence",
-		patternParts: [
-			"api",
-			"member",
-			"presence"
-		],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$3,
-		layouts: [layout_exports],
-		routeSegments: [
-			"api",
-			"member",
-			"presence"
-		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(12),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(12) : null,
-		ids: {
-			"route": "route:/api/member/use",
-			"page": null,
-			"routeHandler": "route-handler:/api/member/use",
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/api/member/use",
-		patternParts: [
-			"api",
-			"member",
-			"use"
-		],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: null,
-		routeHandler: route_exports$2,
-		layouts: [layout_exports],
-		routeSegments: [
-			"api",
-			"member",
-			"use"
-		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(13),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(13) : null,
 		ids: {
 			"route": "route:/api/trial/status",
 			"page": null,
@@ -17819,8 +16335,8 @@ var routes = [
 		unauthorizeds: [null]
 	},
 	{
-		__buildTimeClassifications: __VINEXT_CLASS(14),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(14) : null,
+		__buildTimeClassifications: __VINEXT_CLASS(2),
+		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(2) : null,
 		ids: {
 			"route": "route:/api/trial/use",
 			"page": null,
@@ -17847,43 +16363,6 @@ var routes = [
 			"trial",
 			"use"
 		],
-		templateTreePositions: [],
-		layoutTreePositions: [0],
-		templates: [],
-		errors: [null],
-		errorPaths: [],
-		errorTreePositions: [],
-		slots: {},
-		loading: null,
-		error: null,
-		notFound: null,
-		notFounds: [null],
-		forbidden: null,
-		forbiddens: [null],
-		unauthorized: null,
-		unauthorizeds: [null]
-	},
-	{
-		__buildTimeClassifications: __VINEXT_CLASS(15),
-		__buildTimeReasons: __classDebug ? __VINEXT_CLASS_REASONS(15) : null,
-		ids: {
-			"route": "route:/login",
-			"page": "page:/login",
-			"routeHandler": null,
-			"rootBoundary": "root-boundary:/",
-			"layouts": ["layout:/"],
-			"templates": [],
-			"slots": {}
-		},
-		pattern: "/login",
-		patternParts: ["login"],
-		isDynamic: false,
-		params: [],
-		rootParamNames: [],
-		page: page_exports,
-		routeHandler: null,
-		layouts: [layout_exports],
-		routeSegments: ["login"],
 		templateTreePositions: [],
 		layoutTreePositions: [0],
 		templates: [],
@@ -18343,20 +16822,17 @@ async function handleRequest(request, env, ctx) {
 }
 //#endregion
 //#region worker/index.ts
-/** Cloudflare Worker entry point for MT1399 Baccarat Road Analyzer.
+/** Cloudflare Worker entry point for MT1399 Analyze.
 *  Handles basePath /analyze/ by rewriting asset paths.
-*  Also 301 redirects old /baccarat-road-analyzer/* paths to /analyze/*.
 */
 var BASE_PATH = "/analyze";
-var OLD_PATH = "/baccarat-road-analyzer";
 //#endregion
 //#region \0virtual:cloudflare/worker-entry
 var worker_entry_default = { async fetch(request, env, ctx) {
 	const url = new URL(request.url);
-	if (url.pathname.startsWith(OLD_PATH)) {
-		const newPath = url.pathname.replace(OLD_PATH, BASE_PATH);
-		const newUrl = new URL(newPath + url.search, request.url);
-		return Response.redirect(newUrl.toString(), 301);
+	if (url.pathname === BASE_PATH) {
+		url.pathname = `${BASE_PATH}/`;
+		return Response.redirect(url.toString(), 301);
 	}
 	if (url.pathname.startsWith(`${BASE_PATH}/assets/`)) {
 		const rewrittenPath = url.pathname.slice(8);

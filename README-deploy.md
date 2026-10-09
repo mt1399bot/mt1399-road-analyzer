@@ -1,61 +1,51 @@
-# MT1399 牌路分析器 v1.9.3 — 部署說明
+# MT1399 Analyze v1.11.0 — 公開介紹與 20 局試用
 
-## 檔案結構
+正式網址：`https://mt1399.com/analyze/`
 
-```
-dist/server/          # Worker 伺服器端程式
-  index.js            # 主入口
-dist/client/          # 靜態資源（CSS、JS、圖片）
-  assets/             # 編譯後的 JS/CSS
-  *.png, *.svg        # 圖示與範例圖片
-  _routes.json        # Cloudflare Pages 路由規則
-  robots.txt          # robots.txt
-  sitemap.xml         # sitemap
-wrangler.preview.jsonc  # Preview 環境配置
-db/
-  preview-init.sql    # D1 資料庫初始化 SQL
-```
+## 本版範圍
 
-## 部署步驟
+- 公開介紹頁與搜尋引擎 metadata
+- 手機選取牌路截圖
+- 電腦拖曳、選檔或貼上牌路截圖
+- 大路、大眼仔路、小路及曱甴路辨識
+- 同一 IP 共用 20 局免費額度
+- 只有成功產生分析結果才扣 1 局
+- 辨識失敗與範例圖片不扣次數
+- 不包含會員登入、管理後台、會員 API、學習 API 或自動下注
 
-### 1. 建立 D1 資料庫
+## GitHub → Cloudflare 建置
+
+建置指令：
+
 ```bash
-npx wrangler d1 create mt1399-road-analyzer-preview-db
+npm run build:trial
 ```
-記下輸出的 `database_id`。
 
-### 2. 填入 database_id
-編輯 `wrangler.preview.jsonc`，將 `YOUR_PREVIEW_DB_ID_HERE` 替換為真實 ID。
+輸出目錄：
 
-### 3. 執行 Migration
+```text
+dist/server
+dist/client
+dist-trial/server
+dist-trial/client
+```
+
+Cloudflare 部署前請保留目前環境已設定的 D1 `database_id` 與 `MEMBER_SESSION_SECRET`，不要用範例 placeholder 覆蓋。
+
+若 D1 尚未建立 `trial_usage`，請執行：
+
 ```bash
-npx wrangler d1 execute mt1399-road-analyzer-preview-db --file=./db/preview-init.sql
+npx wrangler d1 execute <DATABASE_NAME> --remote --file=./db/public-trial-init.sql --config <WRANGLER_CONFIG>
 ```
 
-### 4. 設定 Secret
-```bash
-npx wrangler secret put MEMBER_SESSION_SECRET --name mt1399-road-analyzer-preview
-```
-輸入一個隨機字串（建議：`openssl rand -hex 32`）。
+## 驗收
 
-### 5. 部署
-```bash
-npx wrangler deploy --config wrangler.preview.jsonc
-```
+1. `/analyze/` 回傳 HTTP 200 並顯示 v1.11.0。
+2. 首次開啟顯示剩餘 20／20 局。
+3. 成功辨識後變成 19／20，重新整理仍為 19／20。
+4. 同一 IP 的無痕視窗與其他瀏覽器共用相同額度。
+5. 低解析度、非牌路圖片與辨識失敗不扣次數。
+6. 範例圖片可產生結果但不扣次數。
+7. `/analyze/admin`、`/analyze/login`、`/analyze/member`、會員及管理 API 都回傳 404。
 
-## 版本資訊
-
-- 版本：v1.9.3
-- 日期：2026-09-03
-- 變更：正式引擎黑邊裁切 + 解析度檢查、縮放一致性修復、試用版清理
-
-## 驗證項目
-
-部署後請驗證：
-1. Logo HTTP 200
-2. 原圖/200%/黑邊辨識一致
-3. 低解析度圖片顯示「圖片解析度不足」且不扣次數
-4. 同 IP 分析後重新整理仍維持正確次數
-5. 無痕模式次數與一般模式相同
-6. 範例圖片不扣次數
-7. admin/login/member 路由回傳 404
+牌路訊號不代表下一局必然結果；本版不讀取遊戲帳密，也不提供自動下注。
