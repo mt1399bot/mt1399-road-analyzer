@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "include": ["/analyze", "/analyze/*"],
+  "exclude": [
+    "/analyze/admin/*",
+    "/analyze/login/*",
+    "/analyze/api/admin/*",
+    "/analyze/api/member/*",
+    "/analyze/api/learning/*"
+  ]
+}

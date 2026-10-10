@@ -1,0 +1,296 @@
+{
+  "version": "1.11.0",
+  "timestamp": "2026-10-10T03:08:25.861Z",
+  "passed": 10,
+  "failed": 0,
+  "skipped": 6,
+  "total": 16,
+  "reports": [
+    {
+      "filename": "sample-base.png",
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "actual": {
+        "markerCount": 145,
+        "mode": "road-board",
+        "confidence": 0.88,
+        "outcomes": "PBBBBBPPBBPPPBBBBBBPPPBBPPBBPPBBPPBP",
+        "outcomesLength": 36,
+        "bigEyeRoad": 41,
+        "smallRoad": 23,
+        "cockroachRoad": 45
+      }
+    },
+    {
+      "filename": "sample-scaled-50pct.png",
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "Recognition failed as expected: 圖片解析度不足，請上傳較清晰的完整牌路截圖"
+      ],
+      "actual": {
+        "markerCount": 0,
+        "mode": "error",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "sample-scaled-200pct.png",
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "actual": {
+        "markerCount": 145,
+        "mode": "road-board",
+        "confidence": 0.88,
+        "outcomes": "PBBBBBPPBBPPPBBBBBBPPPBBPPBBPPBBPPBP",
+        "outcomesLength": 36,
+        "bigEyeRoad": 41,
+        "smallRoad": 23,
+        "cockroachRoad": 45
+      }
+    },
+    {
+      "filename": "sample-black-border-30.png",
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "actual": {
+        "markerCount": 145,
+        "mode": "road-board",
+        "confidence": 0.88,
+        "outcomes": "PBBBBBPPBBPPPBBBBBBPPPBBPPBBPPBBPPBP",
+        "outcomesLength": 36,
+        "bigEyeRoad": 41,
+        "smallRoad": 23,
+        "cockroachRoad": 45
+      }
+    },
+    {
+      "filename": "sample-blurry.png",
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "Recognition failed as expected: 圖片解析度不足，請上傳較清晰的完整牌路截圖"
+      ],
+      "actual": {
+        "markerCount": 0,
+        "mode": "error",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "sample-cropped.png",
+      "passed": true,
+      "errors": [],
+      "warnings": [
+        "Recognition failed as expected: 圖片解析度不足，請上傳較清晰的完整牌路截圖"
+      ],
+      "actual": {
+        "markerCount": 0,
+        "mode": "error",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "non-road.png",
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "actual": {
+        "markerCount": 0,
+        "mode": "road-board",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "synthetic-road.png",
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "actual": {
+        "markerCount": 64,
+        "mode": "road-board",
+        "confidence": 0.88,
+        "outcomes": "BBPBPBPBBPBBBPBPPBPPBPPBBBBPPBBPPPBBBBPP... (64 total)",
+        "outcomesLength": 64,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "synthetic-road-mt.png",
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "actual": {
+        "markerCount": 60,
+        "mode": "road-board",
+        "confidence": 0.88,
+        "outcomes": "BPBPBPPBBBPBBPPBBPBBPPPBPPBBPBPBPBBPBBBP... (60 total)",
+        "outcomesLength": 60,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "synthetic-road-dg.png",
+      "passed": true,
+      "errors": [],
+      "warnings": [],
+      "actual": {
+        "markerCount": 0,
+        "mode": "road-board",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-mobile-mt.jpg",
+      "passed": false,
+      "errors": [
+        "Fixture image not found: /workspace/scratch/c796a7d92127/mt1399-learning-Cg2D4f/tests/fixtures/real-mobile-mt.jpg"
+      ],
+      "warnings": [
+        "Real screenshot required but not provided"
+      ],
+      "actual": {
+        "markerCount": 0,
+        "mode": "missing",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-mobile-dg.jpg",
+      "passed": false,
+      "errors": [
+        "Fixture image not found: /workspace/scratch/c796a7d92127/mt1399-learning-Cg2D4f/tests/fixtures/real-mobile-dg.jpg"
+      ],
+      "warnings": [
+        "Real screenshot required but not provided"
+      ],
+      "actual": {
+        "markerCount": 0,
+        "mode": "missing",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-desktop-t9.jpg",
+      "passed": false,
+      "errors": [
+        "Fixture image not found: /workspace/scratch/c796a7d92127/mt1399-learning-Cg2D4f/tests/fixtures/real-desktop-t9.jpg"
+      ],
+      "warnings": [
+        "Real screenshot required but not provided"
+      ],
+      "actual": {
+        "markerCount": 0,
+        "mode": "missing",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-mobile-ob.jpg",
+      "passed": false,
+      "errors": [
+        "Fixture image not found: /workspace/scratch/c796a7d92127/mt1399-learning-Cg2D4f/tests/fixtures/real-mobile-ob.jpg"
+      ],
+      "warnings": [
+        "Real screenshot required but not provided"
+      ],
+      "actual": {
+        "markerCount": 0,
+        "mode": "missing",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-mobile-w.jpg",
+      "passed": false,
+      "errors": [
+        "Fixture image not found: /workspace/scratch/c796a7d92127/mt1399-learning-Cg2D4f/tests/fixtures/real-mobile-w.jpg"
+      ],
+      "warnings": [
+        "Real screenshot required but not provided"
+      ],
+      "actual": {
+        "markerCount": 0,
+        "mode": "missing",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-mobile-sa.jpg",
+      "passed": false,
+      "errors": [
+        "Fixture image not found: /workspace/scratch/c796a7d92127/mt1399-learning-Cg2D4f/tests/fixtures/real-mobile-sa.jpg"
+      ],
+      "warnings": [
+        "Real screenshot required but not provided"
+      ],
+      "actual": {
+        "markerCount": 0,
+        "mode": "missing",
+        "confidence": 0,
+        "outcomes": "",
+        "outcomesLength": 0,
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,435 @@
+{
+  "version": "1.9.2",
+  "generatedAt": "2026-09-02T14:00:00+08:00",
+  "note": "Baseline sources: 'generated' = known correct from test script generation, 'manual_review_required' = needs human verification against actual image, 'engine_output' = captured from engine for regression detection only.",
+  "fixtures": [
+    {
+      "filename": "sample-base.png",
+      "description": "Original sample baccarat road image (569x546)",
+      "type": "positive",
+      "source": "internal-sample",
+      "verification": "manual_review_required",
+      "verificationNote": "This baseline was captured from engine output. The actual correct banker/player sequence must be manually verified by examining the image.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45
+      },
+      "baseline": {
+        "markerCount": 145,
+        "mode": "road-board",
+        "confidence": 0.88,
+        "outcomesFirst40": "PBBBBBPPBBPPPBBBBBBPPPBBPPBBPPBBPPBP",
+        "bigEyeRoad": 41,
+        "smallRoad": 23,
+        "cockroachRoad": 45
+      }
+    },
+    {
+      "filename": "sample-scaled-50pct.png",
+      "description": "Sample scaled to 50% (285x273)",
+      "type": "edge",
+      "source": "internal-sample",
+      "canonical": "sample-base.png",
+      "verification": "known_limitation",
+      "verificationNote": "50% downsampling permanently loses spatial information. Engine rejects images with short edge < 280px as insufficient resolution.",
+      "expected": {
+        "shouldFail": true
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "error",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "sample-scaled-200pct.png",
+      "description": "Sample scaled to 200% (1138x1092)",
+      "type": "edge",
+      "source": "internal-sample",
+      "canonical": "sample-base.png",
+      "verification": "engine_output",
+      "verificationNote": "After engine-side normalization (crop borders + downscale to standard size), outcomes are identical to original.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45
+      },
+      "baseline": {
+        "markerCount": 145,
+        "mode": "road-board",
+        "confidence": 0.88,
+        "outcomesFirst40": "PBBBBBPPBBPPPBBBBBBPPPBBPPBBPPBBPPBP",
+        "bigEyeRoad": 41,
+        "smallRoad": 23,
+        "cockroachRoad": 45
+      }
+    },
+    {
+      "filename": "sample-black-border-30.png",
+      "description": "Sample with 30px black border (629x606)",
+      "type": "edge",
+      "source": "internal-sample",
+      "canonical": "sample-base.png",
+      "verification": "engine_output",
+      "verificationNote": "After engine-side border cropping, outcomes are identical to original.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45
+      },
+      "baseline": {
+        "markerCount": 145,
+        "mode": "road-board",
+        "confidence": 0.88,
+        "outcomesFirst40": "PBBBBBPPBBPPPBBBBBBPPPBBPPBBPPBBPPBP",
+        "bigEyeRoad": 41,
+        "smallRoad": 23,
+        "cockroachRoad": 45
+      }
+    },
+    {
+      "filename": "sample-blurry.png",
+      "description": "Blurred sample image (200x192)",
+      "type": "negative",
+      "source": "internal-sample",
+      "verification": "engine_output",
+      "verificationNote": "Expected to fail. Blur removes all recognizable markers.",
+      "expected": {
+        "markerCountMax": 5,
+        "shouldFail": true
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "road-board",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "sample-cropped.png",
+      "description": "Cropped sample bottom-right 15% (85x82)",
+      "type": "negative",
+      "source": "internal-sample",
+      "verification": "engine_output",
+      "verificationNote": "Expected to fail. Cropping removes the road area.",
+      "expected": {
+        "markerCountMax": 5,
+        "shouldFail": true
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "road-board",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "non-road.png",
+      "description": "Not a baccarat road image (600x400 blank)",
+      "type": "negative",
+      "source": "synthetic",
+      "verification": "generated",
+      "verificationNote": "Known correct: blank image has zero markers.",
+      "expected": {
+        "markerCountMax": 5,
+        "shouldFail": true
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "road-board",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "synthetic-road.png",
+      "description": "Synthetic baccarat road with known 64 outcomes (8x8 grid)",
+      "type": "positive",
+      "source": "synthetic",
+      "verification": "generated",
+      "verificationNote": "Known correct: 8x8 grid with exact banker/player sequence defined in generation script.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45,
+        "knownOutcomes": [
+          "B",
+          "B",
+          "P",
+          "B",
+          "P",
+          "B",
+          "P",
+          "B",
+          "B",
+          "P",
+          "B",
+          "B",
+          "B",
+          "P",
+          "B",
+          "P",
+          "P",
+          "B",
+          "P",
+          "P",
+          "B",
+          "P",
+          "P",
+          "B",
+          "B",
+          "B",
+          "B",
+          "P",
+          "P",
+          "B",
+          "B",
+          "P",
+          "P",
+          "P",
+          "B",
+          "B",
+          "B",
+          "B",
+          "P",
+          "P",
+          "P",
+          "B",
+          "P",
+          "P",
+          "P",
+          "P",
+          "B",
+          "B",
+          "B",
+          "P",
+          "B",
+          "B",
+          "P",
+          "B",
+          "B",
+          "P",
+          "P",
+          "P",
+          "P",
+          "B",
+          "B",
+          "P",
+          "P",
+          "B"
+        ]
+      },
+      "baseline": {
+        "markerCount": 64,
+        "mode": "road-board",
+        "confidence": 0.88,
+        "outcomesFirst40": "BBPBPBPBBPBBBPBPPBPPBPPBBBBPPBBPPPBBBBPP",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "synthetic-road-mt.png",
+      "description": "Synthetic MT-style road (6 rows x 10 cols, red/blue with glow)",
+      "type": "positive",
+      "source": "synthetic",
+      "verification": "generated",
+      "verificationNote": "Known correct: 6x10 grid with exact sequence defined in generation script.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45
+      },
+      "baseline": {
+        "markerCount": 60,
+        "mode": "road-board",
+        "confidence": 0.88,
+        "outcomesFirst40": "BPBPBPPBBBPBBPPBBPBBPPPBPPBBPBPBPBBPBBBP",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "synthetic-road-dg.png",
+      "description": "Synthetic DG-style road (dark background) - EXPECTED TO FAIL: engine does not support dark backgrounds",
+      "type": "negative",
+      "source": "synthetic",
+      "verification": "engine_output",
+      "verificationNote": "Documents engine limitation. Dark backgrounds are not supported.",
+      "expected": {
+        "markerCountMax": 5,
+        "shouldFail": true
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "road-board",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      },
+      "note": "Engine limitation: dark backgrounds are not supported. This documents the limitation."
+    },
+    {
+      "filename": "real-mobile-mt.jpg",
+      "description": "Real mobile screenshot from MT platform (TO BE ADDED MANUALLY)",
+      "type": "positive",
+      "source": "real-screenshot",
+      "platform": "MT",
+      "device": "mobile",
+      "verification": "pending",
+      "verificationNote": "PLACEHOLDER. Place actual screenshot in tests/fixtures/ and manually verify outcomes.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "error",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-mobile-dg.jpg",
+      "description": "Real mobile screenshot from DG platform (TO BE ADDED MANUALLY)",
+      "type": "positive",
+      "source": "real-screenshot",
+      "platform": "DG",
+      "device": "mobile",
+      "verification": "pending",
+      "verificationNote": "PLACEHOLDER. Place actual screenshot in tests/fixtures/ and manually verify outcomes.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "error",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-desktop-t9.jpg",
+      "description": "Real desktop screenshot from T9 platform (TO BE ADDED MANUALLY)",
+      "type": "positive",
+      "source": "real-screenshot",
+      "platform": "T9",
+      "device": "desktop",
+      "verification": "pending",
+      "verificationNote": "PLACEHOLDER. Place actual screenshot in tests/fixtures/ and manually verify outcomes.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "error",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-mobile-ob.jpg",
+      "description": "Real mobile screenshot from OB platform (TO BE ADDED MANUALLY)",
+      "type": "positive",
+      "source": "real-screenshot",
+      "platform": "OB",
+      "device": "mobile",
+      "verification": "pending",
+      "verificationNote": "PLACEHOLDER. Place actual screenshot in tests/fixtures/ and manually verify outcomes.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "error",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-mobile-w.jpg",
+      "description": "Real mobile screenshot from W platform (TO BE ADDED MANUALLY)",
+      "type": "positive",
+      "source": "real-screenshot",
+      "platform": "W",
+      "device": "mobile",
+      "verification": "pending",
+      "verificationNote": "PLACEHOLDER. Place actual screenshot in tests/fixtures/ and manually verify outcomes.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "error",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    },
+    {
+      "filename": "real-mobile-sa.jpg",
+      "description": "Real mobile screenshot from SA platform (TO BE ADDED MANUALLY)",
+      "type": "positive",
+      "source": "real-screenshot",
+      "platform": "SA",
+      "device": "mobile",
+      "verification": "pending",
+      "verificationNote": "PLACEHOLDER. Place actual screenshot in tests/fixtures/ and manually verify outcomes.",
+      "expected": {
+        "markerCountMin": 6,
+        "mode": "road-board",
+        "confidenceMin": 0.45
+      },
+      "baseline": {
+        "markerCount": 0,
+        "mode": "error",
+        "confidence": 0,
+        "outcomesFirst40": "",
+        "bigEyeRoad": 0,
+        "smallRoad": 0,
+        "cockroachRoad": 0
+      }
+    }
+  ]
+}

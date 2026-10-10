@@ -1,0 +1,1 @@
+ALTER TABLE `members` ADD `live_analysis_enabled` integer DEFAULT false NOT NULL;

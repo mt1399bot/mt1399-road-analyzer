@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Allow: /analyze/
+Disallow: /analyze/admin/
+Disallow: /analyze/api/
+Disallow: /analyze/login/
+Disallow: /analyze/member/
+
+Sitemap: https://mt1399.com/sitemap.xml

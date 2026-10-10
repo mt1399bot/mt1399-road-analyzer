@@ -1,0 +1,1 @@
+ALTER TABLE `members` ADD `learning_enabled` integer DEFAULT false NOT NULL;
